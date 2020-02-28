@@ -1,2 +1,3 @@
-# poppwatch
-FEC data analytics tool for the Patients Over Profits Pledge initiative
+# FEC Watch
+
+FEC contribution data analytics tool for the Patients Over Profits Pledge initiative
