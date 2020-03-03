@@ -42,3 +42,9 @@ def district_summary(year, state, district):
                            district=district,
                            candidates=candidates
                            )
+
+
+@handlers.route('/candidate/<candidate_id>')
+def candidate_summary(candidate_id):
+    candidate = Candidate.query.get(candidate_id)
+    return render_template("candidate.html", candidate=candidate)

@@ -13,3 +13,17 @@ class Candidate(db.Model):
     office_district = db.Column(db.String(2))
     incumbent_challenger_status = db.Column(ENUM("C", "I", "O", name="incumbent_challenger_status"))
     principal_campaign_committee_fec_id = db.Column(db.String(9))
+
+
+class Committee(db.Model):
+    committee_id = db.Column(db.Integer, primary_key=True)
+    committee_fec_id = db.Column(db.String(9), unique=True, nullable=False)
+    name = db.Column(db.String)
+    designation = db.Column(ENUM("A", "B", "D", "J", "P", "U", name="committee_designation"))
+    type = db.Column(db.String(1))
+    party_affiliation = db.Column(db.String(3))
+    interest_group_category = db.Column(ENUM("C", "L", "M", "T", "V", "W", "I", "H", name="interest_group_category"))
+    connected_organization = db.Column(db.String)
+    candidate_fec_id = db.Column(db.String(9))
+    candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.candidate_id'))
+    candidate = db.relationship('Candidate', backref=db.backref('committees', lazy=True))

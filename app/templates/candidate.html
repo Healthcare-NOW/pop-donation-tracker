@@ -1,0 +1,9 @@
+<!doctype html>
+<title>{{ candidate.name }}</title>
+<h1>{{ candidate.name }}</h1>
+<h2>Committees</h2>
+<ul>
+    {% for committee in candidate.committees %}
+        <li>{{ committee.name }}</li>
+    {% endfor %}
+</ul>
