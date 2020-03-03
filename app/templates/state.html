@@ -1,0 +1,19 @@
+<!doctype html>
+<title>{{state}} {{year}}</title>
+<h1>{{state}} {{year}}</h1>
+<h2>Senate Candidates</h2>
+<ul>
+    {% for senate_candidate in senate_candidates %}
+    <li>{{ senate_candidate.name }}</li>
+    {% endfor %}
+</ul>
+<h2>Congressional districts</h2>
+<ul>
+    {% for congressional_district in congressional_districts %}
+    <li>
+        <a href="{{url_for('handlers.district_summary', year=year, state=state, district=congressional_district[0])}}">
+            {{ congressional_district[0] }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>

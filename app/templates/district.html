@@ -1,0 +1,9 @@
+<!doctype html>
+<title>{{state}} {{year}} Congressional District {{ district }}</title>
+<h1>{{state}} {{year}} Congressional District {{ district }}</h1>
+<h2>Candidates</h2>
+<ul>
+    {% for candidate in candidates %}
+        <li>{{ candidate.name }}</li>
+    {% endfor %}
+</ul>
