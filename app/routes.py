@@ -19,7 +19,7 @@ def state_summary(year, state):
     ).order_by(Candidate.name)
     congressional_districts = db.session.query(Candidate.office_district).filter_by(
         office_state=state, election_year=year, office='H'
-    ).distinct().order_by(Candidate.office_district)
+    ).filter(Candidate.office_district.isnot(None)).distinct().order_by(Candidate.office_district)
     return render_template("state.html",
                            state=state,
                            year=year,

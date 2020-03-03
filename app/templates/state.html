@@ -5,7 +5,7 @@
 <ul>
     {% for candidate in senate_candidates %}
     <li>
-        <a href="{{url_for('handlers.candidate_summary', candidate_id=candidate.candidate_id)}}">
+        <a href="{{url_for('handlers.candidate_summary', candidate_id=candidate.id)}}">
             {{ candidate.name }}
         </a>
     </li>

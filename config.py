@@ -3,4 +3,4 @@ class Config:
     TESTING = False
     CSRF_ENABLED = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/fecwatch"
+    SQLALCHEMY_DATABASE_URI = "postgresql://localhost/fecwatch2"
