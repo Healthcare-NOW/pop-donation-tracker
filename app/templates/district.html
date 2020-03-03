@@ -4,6 +4,10 @@
 <h2>Candidates</h2>
 <ul>
     {% for candidate in candidates %}
-        <li>{{ candidate.name }}</li>
+    <li>
+        <a href="{{url_for('handlers.candidate_summary', candidate_id=candidate.candidate_id)}}">
+            {{ candidate.name }}
+        </a>
+    </li>
     {% endfor %}
 </ul>

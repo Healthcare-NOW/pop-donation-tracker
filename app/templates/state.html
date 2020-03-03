@@ -3,8 +3,12 @@
 <h1>{{state}} {{year}}</h1>
 <h2>Senate Candidates</h2>
 <ul>
-    {% for senate_candidate in senate_candidates %}
-    <li>{{ senate_candidate.name }}</li>
+    {% for candidate in senate_candidates %}
+    <li>
+        <a href="{{url_for('handlers.candidate_summary', candidate_id=candidate.candidate_id)}}">
+            {{ candidate.name }}
+        </a>
+    </li>
     {% endfor %}
 </ul>
 <h2>Congressional districts</h2>
