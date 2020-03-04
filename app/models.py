@@ -1,5 +1,5 @@
 from app.database import db
-from sqlalchemy.dialects.postgresql import ENUM, MONEY
+from sqlalchemy.dialects.postgresql import ENUM
 
 
 class Candidate(db.Model):
@@ -61,7 +61,7 @@ class IndividualContribution(db.Model):
     transaction_type = db.Column(db.String(3))
     entity_type = db.Column(db.String(3))
     date = db.Column(db.Date)
-    amount = db.Column(MONEY)
+    amount = db.Column(db.Numeric(18, 2))
     committee_fec_id = db.Column(db.String(9))
     other_fec_id = db.Column(db.String(9))
     fec_unique_id = db.Column(db.Numeric(19), unique=True, nullable=False)

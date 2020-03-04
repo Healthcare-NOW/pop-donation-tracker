@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template
-from app.models import Candidate
+from app.models import *
 from app.database import db
 from collections import defaultdict
+from sqlalchemy import func
 
 handlers = Blueprint('handlers', __name__)
 
@@ -22,17 +23,15 @@ def state_summary(year, state):
         office_state=state,
         election_year=year,
         office='H'
-    ).order_by(Candidate.name)
+    ).filter(Candidate.office_district.isnot(None)).order_by(Candidate.name)
 
     grouped_by_district = defaultdict(list)
     for candidate in congressional_candidates:
         grouped_by_district[candidate.office_district].append(candidate)
-
     districts = sorted(grouped_by_district.keys())
     candidates_by_district = [
         (district, grouped_by_district[district]) for district in districts
     ]
-    print(candidates_by_district)
     return render_template('state.html',
                            state=state,
                            year=year,
@@ -60,4 +59,13 @@ def district_summary(year, state, district):
 @handlers.route('/candidate/<candidate_id>')
 def candidate_summary(candidate_id):
     candidate = Candidate.query.get(candidate_id)
-    return render_template('candidate.html', candidate=candidate)
+    flagged_individual_contributions = db.session.query(
+        FlaggedIndividualContributor, func.sum(IndividualContribution.amount)
+    ).select_from(Candidate).join(
+        'committees', 'individual_contributions', 'contributor', 'flagged_as'
+    ).filter(Candidate.id == candidate_id).group_by(FlaggedIndividualContributor).having(
+        func.sum(IndividualContribution.amount) > 200
+    )
+    return render_template('candidate.html',
+                           candidate=candidate,
+                           flagged_individual_contributions=flagged_individual_contributions)

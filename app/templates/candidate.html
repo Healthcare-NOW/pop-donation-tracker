@@ -7,3 +7,22 @@
         <li>{{ committee.name }}</li>
     {% endfor %}
 </ul>
+<h2>Flagged Individual Contributions</h2>
+<table>
+    <tr>
+        <th>Contributor</th>
+        <th>City</th>
+        <th>Employer</th>
+        <th>Occupation</th>
+        <th>Amount</th>
+    </tr>
+    {% for contributor, amount in flagged_individual_contributions %}
+        <tr>
+            <td>{{contributor.name}}</td>
+            <td>{{contributor.city}}, {{contributor.state}}</td>
+            <td>{{contributor.employer}}</td>
+            <td>{{contributor.occupation}}</td>
+            <td>{{amount}}</td>
+        </tr>
+    {% endfor %}
+</table>
