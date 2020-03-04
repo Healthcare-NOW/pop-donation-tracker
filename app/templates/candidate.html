@@ -23,7 +23,7 @@
             <td>{{contributor.city}}, {{contributor.state}}</td>
             <td>{{contributor.employer}}</td>
             <td>{{contributor.occupation}}</td>
-            <td>{{amount}}</td>
+            <td><a href="{{url_for('handlers.flagged_individual_contribution_detail', candidate_id=candidate.id, contributor_id=contributor.id)}}">{{amount}}</a></td>
         </tr>
     {% endfor %}
 </table>

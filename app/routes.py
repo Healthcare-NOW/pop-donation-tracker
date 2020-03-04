@@ -63,13 +63,34 @@ def candidate_summary(candidate_id):
         FlaggedIndividualContributor, func.sum(IndividualContribution.amount)
     ).select_from(Candidate).join(
         'committees', 'individual_contributions', 'contributor', 'flagged_as'
-    ).filter(Candidate.id == candidate_id).group_by(FlaggedIndividualContributor).having(
+    ).filter(
+        Candidate.id == candidate_id,
+        IndividualContribution.transaction_type != '24T'
+    ).group_by(FlaggedIndividualContributor).having(
         func.sum(IndividualContribution.amount) > 200
     ).all()
 
     return render_template('candidate.html',
                            candidate=candidate,
                            flagged_individual_contributions=flagged_individual_contributions)
+
+
+@handlers.route('/candidate/<candidate_id>/contributor/<contributor_id>')
+def flagged_individual_contribution_detail(candidate_id, contributor_id):
+    candidate = Candidate.query.get(candidate_id)
+    contributor = FlaggedIndividualContributor.query.get(contributor_id)
+    flagged_individual_contributions = db.session.query(IndividualContribution).select_from(Committee).join(
+        'individual_contributions', 'contributor', 'flagged_as'
+    ).filter(
+        Committee.candidate_id == candidate_id,
+        IndividualContributor.flagged_as_id == contributor_id,
+        IndividualContribution.transaction_type != '24T'
+    ).order_by(IndividualContribution.date)
+    return render_template('flagged_individual_contributions_detail.html',
+                           candidate=candidate,
+                           contributor=contributor,
+                           flagged_individual_contributions=flagged_individual_contributions
+                           )
 
 
 @handlers.route('/flagged_individual_contributors')

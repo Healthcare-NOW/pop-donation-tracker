@@ -1,0 +1,21 @@
+<!doctype html>
+<title>Contributions detail</title>
+<h1>Contributions from {{ contributor.name }} to {{ candidate.name }}</h1>
+<table style="border-spacing: 50px 0;">
+    <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Contributing as</th>
+        <th>Committee</th>
+        <th>Transaction Type</th>
+    </tr>
+    {% for contribution in flagged_individual_contributions %}
+    <tr>
+        <td>{{contribution.date}}</td>
+        <td>{{contribution.amount}}</td>
+        <td>{{contribution.contributor.name}}</td>
+        <td>{{contribution.committee.name}}</td>
+        <td>{{contribution.transaction_type}}</td>
+    </tr>
+    {% endfor %}
+</table>
