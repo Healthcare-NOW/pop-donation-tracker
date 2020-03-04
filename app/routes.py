@@ -65,7 +65,23 @@ def candidate_summary(candidate_id):
         'committees', 'individual_contributions', 'contributor', 'flagged_as'
     ).filter(Candidate.id == candidate_id).group_by(FlaggedIndividualContributor).having(
         func.sum(IndividualContribution.amount) > 200
-    )
+    ).all()
+
     return render_template('candidate.html',
                            candidate=candidate,
                            flagged_individual_contributions=flagged_individual_contributions)
+
+
+@handlers.route('/flagged_individual_contributors')
+def flagged_individual_contributors():
+    flagged_contributors = FlaggedIndividualContributor.query.order_by(FlaggedIndividualContributor.name)
+    grouped_by_employer = defaultdict(list)
+    for contributor in flagged_contributors:
+        grouped_by_employer[contributor.employer].append(contributor)
+    employers = sorted(grouped_by_employer.keys())
+    flagged_contributors_by_employer = [
+        (employer, grouped_by_employer[employer]) for employer in employers
+    ]
+    return render_template('flagged_individual_contributors.html',
+                           flagged_contributors_by_employer=flagged_contributors_by_employer
+                           )

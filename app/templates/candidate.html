@@ -7,8 +7,9 @@
         <li>{{ committee.name }}</li>
     {% endfor %}
 </ul>
+{% if flagged_individual_contributions %}
 <h2>Flagged Individual Contributions</h2>
-<table>
+<table style="border-spacing: 50px 0;">
     <tr>
         <th>Contributor</th>
         <th>City</th>
@@ -26,3 +27,6 @@
         </tr>
     {% endfor %}
 </table>
+{% else %}
+<i>No flagged individual contributions</i>
+{% endif %}
