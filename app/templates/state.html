@@ -13,11 +13,18 @@
 </ul>
 <h2>Congressional districts</h2>
 <ul>
-    {% for congressional_district in congressional_districts %}
+    {% for (district, candidates) in candidates_by_district %}
     <li>
-        <a href="{{url_for('handlers.district_summary', year=year, state=state, district=congressional_district[0])}}">
-            {{ congressional_district[0] }}
-        </a>
+        {{ district }}
+        <ul>
+            {% for candidate in candidates %}
+            <li>
+                <a href="{{url_for('handlers.candidate_summary', candidate_id=candidate.id)}}">
+                    {{ candidate.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </li>
     {% endfor %}
 </ul>

@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template
 from app.models import Candidate
 from app.database import db
+from collections import defaultdict
 
 handlers = Blueprint('handlers', __name__)
 
@@ -17,14 +18,26 @@ def state_summary(year, state):
         election_year=year,
         office='S'
     ).order_by(Candidate.name)
-    congressional_districts = db.session.query(Candidate.office_district).filter_by(
-        office_state=state, election_year=year, office='H'
-    ).filter(Candidate.office_district.isnot(None)).distinct().order_by(Candidate.office_district)
+    congressional_candidates = Candidate.query.filter_by(
+        office_state=state,
+        election_year=year,
+        office='H'
+    ).order_by(Candidate.name)
+
+    grouped_by_district = defaultdict(list)
+    for candidate in congressional_candidates:
+        grouped_by_district[candidate.office_district].append(candidate)
+
+    districts = sorted(grouped_by_district.keys())
+    candidates_by_district = [
+        (district, grouped_by_district[district]) for district in districts
+    ]
+    print(candidates_by_district)
     return render_template('state.html',
                            state=state,
                            year=year,
                            senate_candidates=senate_candidates,
-                           congressional_districts=congressional_districts
+                           candidates_by_district=candidates_by_district
                            )
 
 
