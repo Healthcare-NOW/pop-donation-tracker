@@ -20,7 +20,7 @@ def state_summary(year, state):
     congressional_districts = db.session.query(Candidate.office_district).filter_by(
         office_state=state, election_year=year, office='H'
     ).filter(Candidate.office_district.isnot(None)).distinct().order_by(Candidate.office_district)
-    return render_template("state.html",
+    return render_template('state.html',
                            state=state,
                            year=year,
                            senate_candidates=senate_candidates,
@@ -36,7 +36,7 @@ def district_summary(year, state, district):
         office='H',
         office_district=district
     ).order_by(Candidate.name)
-    return render_template("district.html",
+    return render_template('district.html',
                            state=state,
                            year=year,
                            district=district,
@@ -47,4 +47,4 @@ def district_summary(year, state, district):
 @handlers.route('/candidate/<candidate_id>')
 def candidate_summary(candidate_id):
     candidate = Candidate.query.get(candidate_id)
-    return render_template("candidate.html", candidate=candidate)
+    return render_template('candidate.html', candidate=candidate)
