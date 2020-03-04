@@ -28,7 +28,8 @@ class Committee(db.Model):
     candidate = db.relationship('Candidate', backref=db.backref('committees', lazy=True))
 
 
-class IndividualContributor(db.Model):
+class BaseIndividual(db.Model):
+    __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     city = db.Column(db.String(30))
@@ -36,6 +37,15 @@ class IndividualContributor(db.Model):
     zip = db.Column(db.String(9))
     employer = db.Column(db.String(38))
     occupation = db.Column(db.String(38))
+
+
+class IndividualContributor(BaseIndividual):
+    flagged_as_id = db.Column(db.Integer, db.ForeignKey('flagged_individual_contributor.id'))
+    flagged_as = db.relationship('FlaggedIndividualContributor', backref=db.backref('aliases', lazy=True))
+
+
+class FlaggedIndividualContributor(BaseIndividual):
+    pass
 
 
 class IndividualContribution(db.Model):
