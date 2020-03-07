@@ -192,12 +192,12 @@ SELECT
     i.other_fec_id,
     i.sub_id
 FROM individual_contribution_temp_extract i, individual_contributor c
-WHERE i.name = c.name
-AND i.city = c.city
-AND i.state = c.state
-AND i.zip = c.zip
-AND i.employer = c.employer
-AND i.occupation = c.occupation;
+WHERE (i.name = c.name or (i.name is null and c.name is null))
+AND (i.city = c.city or (i.city is null and c.city is null))
+AND (i.state = c.state or (i.state is null and c.state is null))
+AND (i.zip = c.zip or (i.zip is null and c.zip is null))
+AND (i.employer = c.employer or (i.employer is null and c.employer is null))
+AND (i.occupation = c.occupation or (i.occupation is null and c.occupation is null));
 
 DROP TABLE individual_contribution_temp_extract;
 
