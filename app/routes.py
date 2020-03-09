@@ -60,35 +60,38 @@ def district_summary(year, state, district):
 def candidate_summary(candidate_id):
     candidate = Candidate.query.get(candidate_id)
     flagged_individual_contributions = db.session.query(
-        FlaggedIndividualContributor, func.sum(IndividualContribution.amount)
+        FlaggedEmployer, func.sum(IndividualContribution.amount)
     ).select_from(Candidate).join(
-        'committees', 'individual_contributions', 'contributor', 'flagged_as'
+        'committees', 'individual_contributions', 'contributor', 'employer_flagged_as'
     ).filter(
         Candidate.id == candidate_id,
         IndividualContribution.transaction_type != '24T'
-    ).group_by(FlaggedIndividualContributor).having(
+    ).group_by(FlaggedEmployer).having(
         func.sum(IndividualContribution.amount) > 200
-    ).all()
+    ).order_by(func.sum(IndividualContribution.amount).desc()).all()
 
     return render_template('candidate.html',
                            candidate=candidate,
                            flagged_individual_contributions=flagged_individual_contributions)
 
 
-@handlers.route('/candidate/<candidate_id>/contributor/<contributor_id>')
-def flagged_individual_contribution_detail(candidate_id, contributor_id):
+@handlers.route('/candidate/<candidate_id>/flagged_employer/<employer_id>')
+def flagged_individual_contribution_detail(candidate_id, employer_id):
     candidate = Candidate.query.get(candidate_id)
-    contributor = FlaggedIndividualContributor.query.get(contributor_id)
-    flagged_individual_contributions = db.session.query(IndividualContribution).select_from(Committee).join(
-        'individual_contributions', 'contributor', 'flagged_as'
+    employer = FlaggedEmployer.query.get(employer_id)
+    flagged_individual_contributions = db.session.query(
+        IndividualContributor, func.sum(IndividualContribution.amount)
+    ).select_from(Committee).join(
+        'individual_contributions', 'contributor'
     ).filter(
         Committee.candidate_id == candidate_id,
-        IndividualContributor.flagged_as_id == contributor_id,
+        IndividualContributor.employer_flagged_as_id == employer_id,
         IndividualContribution.transaction_type != '24T'
-    ).order_by(IndividualContribution.date)
+    ).group_by(IndividualContributor).order_by(
+        IndividualContributor.name, func.sum(IndividualContribution.amount).desc())
     return render_template('flagged_individual_contributions_detail.html',
                            candidate=candidate,
-                           contributor=contributor,
+                           employer=employer,
                            flagged_individual_contributions=flagged_individual_contributions
                            )
 
