@@ -1,6 +1,6 @@
-from backend.app.models import *
-from backend.app.schemas import candidates_schema
-from backend.app.utils import group_by
+from app.models import *
+from app.schemas import candidates_schema
+from app.utils import group_by
 from flask import Blueprint, jsonify
 
 api = Blueprint('api', __name__)
