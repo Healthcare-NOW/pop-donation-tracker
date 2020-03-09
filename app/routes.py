@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template
 from app.models import *
 from app.database import db
+from app.schemas import candidates_schema
+from app.utils import group_by
 from collections import defaultdict
+from flask import Blueprint, jsonify, render_template
 from sqlalchemy import func
 
 handlers = Blueprint('handlers', __name__)
@@ -40,20 +42,26 @@ def state_summary(year, state):
                            )
 
 
-@handlers.route('/year/<int:year>/state/<state>/district/<district>')
-def district_summary(year, state, district):
-    candidates = Candidate.query.filter_by(
+@handlers.route('/year/<int:year>/state/<state>/candidates')
+def candidates_summary(year, state):
+    senate_candidates = Candidate.query.filter_by(
         office_state=state,
         election_year=year,
-        office='H',
-        office_district=district
+        office='S'
     ).order_by(Candidate.name)
-    return render_template('district.html',
-                           state=state,
-                           year=year,
-                           district=district,
-                           candidates=candidates
-                           )
+    candidates_by_district = group_by(Candidate.query.filter_by(
+        office_state=state,
+        election_year=year,
+        office='H'
+    ).filter(Candidate.office_district.isnot(None)).order_by(Candidate.name), lambda c: c.office_district)
+
+    return jsonify({
+        'senate': candidates_schema.dump(senate_candidates),
+        'house': [
+            {'district': district,
+             'candidates': candidates_schema.dump(candidates)}
+            for (district, candidates) in candidates_by_district
+        ]})
 
 
 @handlers.route('/candidate/<candidate_id>')
