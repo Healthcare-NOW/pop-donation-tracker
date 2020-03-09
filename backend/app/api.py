@@ -11,7 +11,7 @@ def health():
     return jsonify({'message': 'OK'})
 
 
-@api.route('/year/<int:year>/state/<state>/candidates')
+@api.route('/year/<int:year>/state/<state>')
 def state_summary(year, state):
     senate_candidates = Candidate.query.filter_by(
         office_state=state,

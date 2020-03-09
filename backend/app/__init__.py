@@ -11,7 +11,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(Config)
     app.register_blueprint(handlers)
-    app.register_blueprint(api)
+    app.register_blueprint(api, url_prefix='/api')
     db.init_app(app)
     ma.init_app(app)
     return app

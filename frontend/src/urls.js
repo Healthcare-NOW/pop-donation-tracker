@@ -1,0 +1,1 @@
+export const stateSummaryUrl = (year, state) => `/api/year/${year}/state/${state}`;
