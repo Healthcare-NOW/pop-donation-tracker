@@ -1,28 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {stateSummaryUrl} from '../urls';
-import {Header, Segment, Table} from 'semantic-ui-react'
+import {candidateSummaryUrl, stateSummaryUrl} from '../urls';
+import {Header, Segment, List} from 'semantic-ui-react'
 import {getRequest} from "../request";
+import {Link} from 'react-router-dom';
+import {partyDisplayNames} from "../constants";
+
+const CandidateName = ({candidate}) => {
+    const {id, name, partyAffiliation} = candidate;
+    return (<Link to={candidateSummaryUrl(id)}>{name} {`(${partyDisplayNames[partyAffiliation] || partyAffiliation})`}</Link>);
+};
 
 const SenateCandidateList = ({candidates}) => {
     return (
-        <Table celled>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Name</Table.HeaderCell>
-                    <Table.HeaderCell>Party Affiliation</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-                {candidates.map(({id, name, partyAffiliation}) => (
-                    <Table.Row key={id}>
-                        <Table.Cell>{name}</Table.Cell>
-                        <Table.Cell>{partyAffiliation}</Table.Cell>
-                    </Table.Row>
-                ))}
-            </Table.Body>
-        </Table>
+        <List>
+            {candidates.map(candidate => (
+                <List.Item key={candidate.id}>
+                    <CandidateName candidate={candidate}/>
+                </List.Item>
+            ))}
+        </List>
     );
 };
 
@@ -31,23 +28,13 @@ const HouseCandidateList = ({candidatesByDistrict}) =>
         {candidatesByDistrict.map(({district, candidates}) =>
             <Segment>
                 <Header size='medium'>{ district }</Header>
-                <Table celled>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Name</Table.HeaderCell>
-                            <Table.HeaderCell>Party Affiliation</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        {candidates.map(({id, name, partyAffiliation}) => (
-                            <Table.Row key={id}>
-                                <Table.Cell>{name}</Table.Cell>
-                                <Table.Cell>{partyAffiliation}</Table.Cell>
-                            </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
+                <List>
+                    {candidates.map(candidate => (
+                        <List.Item key={candidate.id}>
+                            <CandidateName candidate={candidate}/>
+                        </List.Item>
+                    ))}
+                </List>
             </Segment>
         )}
     </Segment.Group>);
