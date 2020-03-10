@@ -1,13 +1,13 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom'
-import {candidateSummaryApiUrl, stateSummaryUrl} from "../urls";
+import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl, stateSummaryUrl} from "../urls";
 import {Header, Loader, Segment, Table} from "semantic-ui-react";
 import {useFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {candidateDisplayName} from "../helpers";
 
 
-const FlaggedIndividualContributionList = ({contributions}) => (
+const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
         <Table.Header>
             <Table.Row>
@@ -19,7 +19,11 @@ const FlaggedIndividualContributionList = ({contributions}) => (
             {contributions.map(({flaggedEmployerId, flaggedEmployerName, amount}) => (
                 <Table.Row key={flaggedEmployerId}>
                     <Table.Cell>{flaggedEmployerName}</Table.Cell>
-                    <Table.Cell>{amount}</Table.Cell>
+                    <Table.Cell>
+                        <Link
+                            to={flaggedIndividualContributionsUrl(candidateId, flaggedEmployerId)}>{amount}
+                        </Link>
+                    </Table.Cell>
                 </Table.Row>
             ))}
         </Table.Body>
@@ -74,8 +78,8 @@ const CandidateSummary = () => {
                         <Header size='large'>Contributions from Flagged Employers</Header>
                         {
                             handleEmptyList(() =>
-                                <FlaggedIndividualContributionList
-                                    contributions={flaggedContributions}/>, flaggedContributions)
+                                <FlaggedIndividualContributionList candidateId={candidateId}
+                                                                   contributions={flaggedContributions}/>, flaggedContributions)
                         }
                     </Segment>
                 </Segment.Group>

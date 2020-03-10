@@ -8,6 +8,7 @@ import StateSummary from './components/StateSummary';
 import CandidateSummary from './components/CandidateSummary';
 import {Container} from 'semantic-ui-react';
 import './App.css';
+import FlaggedIndividualContributions from "./components/FlaggedIndividualContributions";
 
 export default function App() {
     return (
@@ -17,6 +18,9 @@ export default function App() {
                     <Switch>
                         <Route path='/year/:year/state/:state'>
                             <StateSummary/>
+                        </Route>
+                        <Route path='/candidate/:candidateId/flagged-employer/:employerId'>
+                            <FlaggedIndividualContributions/>
                         </Route>
                         <Route path='/candidate/:candidateId'>
                             <CandidateSummary/>
