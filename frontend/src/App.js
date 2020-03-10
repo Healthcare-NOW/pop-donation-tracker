@@ -7,20 +7,23 @@ import {
 import StateSummary from './components/StateSummary';
 import CandidateSummary from './components/CandidateSummary';
 import {Container} from 'semantic-ui-react';
+import './App.css';
 
 export default function App() {
     return (
         <Router>
-            <Container>
-                <Switch>
-                    <Route path='/year/:year/state/:state'>
-                        <StateSummary/>
-                    </Route>
-                    <Route path='/candidate/:candidateId'>
-                        <CandidateSummary/>
-                    </Route>
-                </Switch>
-            </Container>
+            <div className='App-mainBody'>
+                <Container>
+                    <Switch>
+                        <Route path='/year/:year/state/:state'>
+                            <StateSummary/>
+                        </Route>
+                        <Route path='/candidate/:candidateId'>
+                            <CandidateSummary/>
+                        </Route>
+                    </Switch>
+                </Container>
+            </div>
         </Router>
     );
 }

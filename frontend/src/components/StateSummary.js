@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
-import {candidateSummaryUrl, stateSummaryUrl} from '../urls';
-import {Header, Segment, List} from 'semantic-ui-react'
-import {getRequest} from "../request";
-import {Link} from 'react-router-dom';
-import {partyDisplayNames} from "../constants";
+import React from 'react';
+import {Link, useParams} from 'react-router-dom';
+import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
+import {Header, List, Loader, Segment} from 'semantic-ui-react'
+import {useFetch} from "../hooks";
+import {candidateDisplayName} from "../helpers";
 
-const CandidateName = ({candidate}) => {
-    const {id, name, partyAffiliation} = candidate;
-    return (<Link to={candidateSummaryUrl(id)}>{name} {`(${partyDisplayNames[partyAffiliation] || partyAffiliation})`}</Link>);
+const CandidateLink = ({candidate}) => {
+    const {id} = candidate;
+    return (<Link to={candidateSummaryUrl(id)}>{candidateDisplayName(candidate)}</Link>);
 };
+
 
 const SenateCandidateList = ({candidates}) => {
     return (
         <List>
             {candidates.map(candidate => (
                 <List.Item key={candidate.id}>
-                    <CandidateName candidate={candidate}/>
+                    <CandidateLink candidate={candidate}/>
                 </List.Item>
             ))}
         </List>
@@ -31,7 +31,7 @@ const HouseCandidateList = ({candidatesByDistrict}) =>
                 <List>
                     {candidates.map(candidate => (
                         <List.Item key={candidate.id}>
-                            <CandidateName candidate={candidate}/>
+                            <CandidateLink candidate={candidate}/>
                         </List.Item>
                     ))}
                 </List>
@@ -41,15 +41,14 @@ const HouseCandidateList = ({candidatesByDistrict}) =>
 
 function StateSummary() {
     const {year, state} = useParams();
-    const [senateCandidates, setSenateCandidates] = useState([]);
-    const [houseCandidates, setHouseCandidates] = useState([]);
-    useEffect(() => {
-            getRequest(stateSummaryUrl(year, state)).then(({senate, house}) => {
-                setSenateCandidates(senate);
-                setHouseCandidates(house);
-            })
-        }
-        , [year, state]);
+    const {data, isLoading} = useFetch(stateSummaryApiUrl(year, state), {
+        senate: [],
+        house: []
+    });
+
+    const {senate, house} = data;
+
+    if (isLoading) return (<Loader active inline='centered' />);
 
     return (
         <div>
@@ -58,13 +57,13 @@ function StateSummary() {
                 <Segment.Group>
                     <Segment>
                         <Header size='large'>Senate Candidates</Header>
-                        <SenateCandidateList candidates={senateCandidates}/>
+                        <SenateCandidateList candidates={senate}/>
                     </Segment>
                 </Segment.Group>
                 <Segment.Group>
                     <Segment>
                         <Header size='large'>House Candidates</Header>
-                        <HouseCandidateList candidatesByDistrict={houseCandidates}/>
+                        <HouseCandidateList candidatesByDistrict={house}/>
                     </Segment>
                 </Segment.Group>
             </div>
