@@ -54,7 +54,7 @@ class FlaggedIndividualContributor(BaseIndividual):
 
 
 class IndividualContribution(BaseModel):
-    committee_id = db.Column(db.Integer, db.ForeignKey('committee.id'), nullable=False)
+    committee_id = db.Column(db.Integer, db.ForeignKey('committee.id'), nullable=False, index=True)
     committee = db.relationship('Committee', backref=db.backref('individual_contributions', lazy=True))
     contributor_id = db.Column(db.Integer, db.ForeignKey('individual_contributor.id'), nullable=False)
     contributor = db.relationship('IndividualContributor', backref=db.backref('individual_contributions', lazy=True))

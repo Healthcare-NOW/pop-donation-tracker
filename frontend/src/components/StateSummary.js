@@ -4,6 +4,7 @@ import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
 import {Header, List, Loader, Segment} from 'semantic-ui-react'
 import {useFetch} from "../hooks";
 import {candidateDisplayName} from "../helpers";
+import {handleEmptyList} from "../utils";
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
@@ -57,7 +58,7 @@ function StateSummary() {
                 <Segment.Group>
                     <Segment>
                         <Header size='large'>Senate Candidates</Header>
-                        <SenateCandidateList candidates={senate}/>
+                        { handleEmptyList(() => <SenateCandidateList candidates={senate}/>, senate) }
                     </Segment>
                 </Segment.Group>
                 <Segment.Group>

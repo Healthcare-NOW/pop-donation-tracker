@@ -4,6 +4,7 @@ from app.schemas import candidate_with_committees_schema, candidate_schema, cand
 from app.utils import group_by
 from flask import Blueprint, jsonify
 from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 api = Blueprint('api', __name__)
 
@@ -37,14 +38,16 @@ def state_summary(year, state):
 
 @api.route('/candidate/<candidate_id>')
 def candidate_summary(candidate_id):
-    candidate = Candidate.query.get(candidate_id)
+    candidate = Candidate.query.options(joinedload('committees')).get(candidate_id)
+    committee_ids = [committee.id for committee in candidate.committees]
+
     flagged_individual_contributions = db.session.query(
         FlaggedEmployer, func.sum(IndividualContribution.amount)
-    ).select_from(Candidate).join(
-        'committees', 'individual_contributions', 'contributor', 'employer_flagged_as'
+    ).select_from(IndividualContribution).join(
+        'contributor', 'employer_flagged_as'
     ).filter(
-        Candidate.id == candidate_id,
-        IndividualContribution.transaction_type != '24T'
+        IndividualContribution.transaction_type != '24T',
+        IndividualContribution.committee_id.in_(committee_ids)
     ).group_by(FlaggedEmployer).having(
         func.sum(IndividualContribution.amount) > 200
     ).order_by(func.sum(IndividualContribution.amount).desc()).all()
@@ -63,14 +66,17 @@ def candidate_summary(candidate_id):
 
 @api.route('/candidate/<candidate_id>/flagged-employer/<employer_id>')
 def flagged_individual_contribution_detail(candidate_id, employer_id):
-    candidate = Candidate.query.get(candidate_id)
+    candidate = Candidate.query.options(joinedload('committees')).get(candidate_id)
+    committee_ids = [committee.id for committee in candidate.committees]
+
     employer = FlaggedEmployer.query.get(employer_id)
+
     flagged_individual_contributions = db.session.query(
         IndividualContributor, func.sum(IndividualContribution.amount)
-    ).select_from(Committee).join(
-        'individual_contributions', 'contributor'
+    ).select_from(IndividualContribution).join(
+        'contributor'
     ).filter(
-        Committee.candidate_id == candidate_id,
+        IndividualContribution.committee_id.in_(committee_ids),
         IndividualContributor.employer_flagged_as_id == employer_id,
         IndividualContribution.transaction_type != '24T'
     ).group_by(IndividualContributor).order_by(

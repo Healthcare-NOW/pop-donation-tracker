@@ -6,6 +6,10 @@ from flask_migrate import Migrate
 from app.routes import handlers
 from app.api import api
 
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)

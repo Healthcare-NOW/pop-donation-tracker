@@ -9,6 +9,7 @@ import CandidateSummary from './components/CandidateSummary';
 import {Container} from 'semantic-ui-react';
 import './App.css';
 import FlaggedIndividualContributions from "./components/FlaggedIndividualContributions";
+import Landing from "./components/Landing";
 
 export default function App() {
     return (
@@ -24,6 +25,9 @@ export default function App() {
                         </Route>
                         <Route path='/candidate/:candidateId'>
                             <CandidateSummary/>
+                        </Route>
+                        <Route path='/'>
+                            <Landing/>
                         </Route>
                     </Switch>
                 </Container>

@@ -10,11 +10,11 @@ for employer in flagged_employers:
     for matching_rule in employer.matching_rules:
         print(f'Employer: {matching_rule.employer} City: {matching_rule.city} State: {matching_rule.state}')
         query = IndividualContributor.query.filter(
-            IndividualContributor.employer.op('SIMILAR TO')(matching_rule.employer))
+            IndividualContributor.employer.op('~')(matching_rule.employer))
         if matching_rule.city:
-            query = query.filter(IndividualContributor.city.op('SIMILAR TO')(matching_rule.city))
+            query = query.filter(IndividualContributor.city.op('~')(matching_rule.city))
         if matching_rule.state:
-            query = query.filter(IndividualContributor.state.op('SIMILAR TO')(matching_rule.state))
+            query = query.filter(IndividualContributor.state == matching_rule.state)
 
         num_updated = query.update(
             {IndividualContributor.employer_flagged_as_id: employer.id}, synchronize_session=False)

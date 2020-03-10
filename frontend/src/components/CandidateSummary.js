@@ -75,7 +75,7 @@ const CandidateSummary = () => {
                         }
                     </Segment>
                     <Segment>
-                        <Header size='large'>Contributions from Flagged Employers</Header>
+                        <Header size='large'>Individual Contributions</Header>
                         {
                             handleEmptyList(() =>
                                 <FlaggedIndividualContributionList candidateId={candidateId}
