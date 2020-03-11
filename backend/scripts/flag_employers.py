@@ -1,9 +1,11 @@
 from fecwatch import app
 from app.models import *
 from app.models import db
+from sqlalchemy.orm import joinedload
 app.app_context().push()
 
-flagged_employers = FlaggedEmployer.query.all()
+
+flagged_employers = FlaggedEmployer.query.option(joinedload('matching_rules')).all()
 
 for employer in flagged_employers:
     print(f'Applying rules for {employer.name}...')

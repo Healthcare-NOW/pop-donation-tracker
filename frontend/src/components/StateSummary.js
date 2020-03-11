@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Grid, Header, List, Loader, Segment} from 'semantic-ui-react'
+import {Grid, Header, Icon, List, Loader, Segment} from 'semantic-ui-react'
 import {useFetch} from "../hooks";
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
@@ -9,7 +9,12 @@ import {filter} from 'lodash';
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
-    return (<Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>);
+    return (
+        <span>
+           <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
+            { candidate.incumbentChallengerStatus === 'I' && <span className='incumbent'><Icon color='black' name='star'/></span> }
+        </span>
+    )
 };
 
 const CandidateList = ({candidates}) => (
