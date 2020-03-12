@@ -51,15 +51,15 @@
 }
 
 .candidateList.republican {
-  background-color: #fa8e94;
+  background-color: #f7a8a8;
 }
 
 .candidateList.democrat {
-  background-color: #d2dcfa;
+  background-color: #dadef7;
 }
 
 .candidateList.other {
-  background-color: #c4c0c1;
+  background-color: #d9d7d7;
 }
 
 .candidateLink a {

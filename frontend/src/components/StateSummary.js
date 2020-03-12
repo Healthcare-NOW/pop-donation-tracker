@@ -51,7 +51,7 @@ const CandidateListByParty = ({candidates}) => {
 const HouseCandidateList = ({candidatesByDistrict}) =>
     (<Segment.Group>
         {candidatesByDistrict.map(({district, candidates}) =>
-            <Segment key={district}>
+            <Segment basic key={district}>
                 <Header size='medium'>{district}</Header>
                 <CandidateListByParty candidates={candidates}/>
             </Segment>
@@ -73,15 +73,15 @@ function StateSummary() {
         <div>
             <Header as='h1'>{state} {year}</Header>
             <Segment.Group>
-                <Segment>
+                <Segment basic>
                     <Header size='large'>Senate Candidates</Header>
                     <Segment.Group>
-                        <Segment>
+                        <Segment basic>
                             {handleEmptyList(() => <CandidateListByParty candidates={senate}/>, senate)}
                         </Segment>
                     </Segment.Group>
                 </Segment>
-                <Segment>
+                <Segment basic>
                     <Header size='large'>House Candidates</Header>
                     <HouseCandidateList candidatesByDistrict={house}/>
                 </Segment>
