@@ -19,6 +19,7 @@ class IndividualContributorSchema(ma.SQLAlchemyAutoSchema):
         model = IndividualContributor
 
 
+committee_schema = CommitteeSchema()
 candidate_with_committees_schema = CandidateSchema()
 candidate_schema = CandidateSchema(exclude=('committees',))
 candidates_schema = CandidateSchema(many=True, exclude=('committees',))

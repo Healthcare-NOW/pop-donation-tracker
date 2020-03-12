@@ -1,6 +1,6 @@
 from app.models import *
 from app.schemas import candidate_with_committees_schema, candidate_schema, candidates_schema, \
-    individual_contributor_schema
+    committee_schema, individual_contributor_schema
 from app.utils import group_by
 from flask import Blueprint, jsonify
 from sqlalchemy import func
@@ -52,14 +52,32 @@ def candidate_summary(candidate_id):
         func.sum(IndividualContribution.amount) > 200
     ).order_by(func.sum(IndividualContribution.amount).desc()).all()
 
+    flagged_committee_contributions = db.session.query(
+        Committee, FlaggedEmployer, func.sum(CommitteeContribution.amount)
+    ).select_from(CommitteeContribution).join(
+        'donor_committee', 'connected_organization_flagged_as'
+    ).filter(
+        CommitteeContribution.transaction_type != '24A',
+        CommitteeContribution.recipient_committee_id.in_(committee_ids) | (CommitteeContribution.candidate_id == candidate.id)
+    ).group_by(Committee, FlaggedEmployer).having(
+        func.sum(CommitteeContribution.amount) > 200
+    ).order_by(func.sum(CommitteeContribution.amount).desc()).all()
+
     return jsonify({
         'candidate': candidate_with_committees_schema.dump(candidate),
-        'flagged_contributions': [
+        'flagged_individual_contributions': [
             {
                 'flagged_employer_id': flaggedEmployer.id,
                 'flagged_employer_name': flaggedEmployer.name,
                 'amount': str(amount)
             } for (flaggedEmployer, amount) in flagged_individual_contributions
+        ],
+        'flagged_committee_contributions': [
+            {
+                'committee': committee_schema.dump(committee),
+                'flagged_connected_organization': flagged_employer.name,
+                'amount': str(amount)
+            } for (committee, flagged_employer, amount) in flagged_committee_contributions
         ]
     })
 

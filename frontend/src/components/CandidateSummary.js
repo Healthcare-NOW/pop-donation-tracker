@@ -29,6 +29,26 @@ const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
         </Table.Body>
     </Table>);
 
+const FlaggedCommitteeContributionList = ({contributions}) => (
+    <Table celled>
+        <Table.Header>
+            <Table.Row>
+                <Table.HeaderCell>Committee</Table.HeaderCell>
+                <Table.HeaderCell>Connected Organization</Table.HeaderCell>
+                <Table.HeaderCell>Total Amount</Table.HeaderCell>
+            </Table.Row>
+        </Table.Header>
+        <Table.Body>
+            {contributions.map(({committee, flaggedConnectedOrganization, amount}) => (
+                <Table.Row key={committee.id}>
+                    <Table.Cell>{committee.name}</Table.Cell>
+                    <Table.Cell>{flaggedConnectedOrganization}</Table.Cell>
+                    <Table.Cell>{amount}</Table.Cell>
+                </Table.Row>
+            ))}
+        </Table.Body>
+    </Table>);
+
 const CommitteeList = ({committees}) => (
     <Table celled>
         <Table.Header>
@@ -53,10 +73,10 @@ const CandidateSummary = () => {
     const {candidateId} = useParams();
     const {data, isLoading} = useFetch(candidateSummaryApiUrl(candidateId), {
         candidate: {committees: []},
-        flaggedContributions: []
+        flaggedIndividualContributions: [],
+        flaggedCommitteeContributions: []
     });
-
-    const {candidate, flaggedContributions} = data;
+    const {candidate, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
     const {officeState, electionYear, committees} = candidate;
 
     if (isLoading) return (<Loader active inline='centered'/>);
@@ -75,11 +95,18 @@ const CandidateSummary = () => {
                         }
                     </Segment>
                     <Segment>
+                        <Header size='large'>Committee Contributions</Header>
+                        {
+                            handleEmptyList(() =>
+                                <FlaggedCommitteeContributionList contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
+                        }
+                    </Segment>
+                    <Segment>
                         <Header size='large'>Individual Contributions</Header>
                         {
                             handleEmptyList(() =>
                                 <FlaggedIndividualContributionList candidateId={candidateId}
-                                                                   contributions={flaggedContributions}/>, flaggedContributions)
+                                                                   contributions={flaggedIndividualContributions}/>, flaggedIndividualContributions)
                         }
                     </Segment>
                 </Segment.Group>
