@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Grid, Header, Icon, List, Loader, Segment} from 'semantic-ui-react'
+import {Card, Header, Icon, List, Loader, Segment} from 'semantic-ui-react'
 import {useFetch} from "../hooks";
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
@@ -10,21 +10,26 @@ import {filter} from 'lodash';
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
     return (
-        <span>
+        <span className='candidateLink'>
            <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
-            { candidate.incumbentChallengerStatus === 'I' && <span className='incumbent'><Icon color='black' name='star'/></span> }
+            {candidate.incumbentChallengerStatus === 'I' &&
+            <span className='incumbent'><Icon color='black' name='star'/></span>}
         </span>
     )
 };
 
-const CandidateList = ({candidates}) => (
-    <List>
-        {candidates.map(candidate => (
-            <List.Item key={candidate.id}>
-                <CandidateLink candidate={candidate}/>
-            </List.Item>
-        ))}
-    </List>
+const CandidateList = ({candidates, className}) => (
+    <Card>
+        <div className={`candidateList ${className}`}>
+            <List>
+                {candidates.map(candidate => (
+                    <List.Item key={candidate.id}>
+                        <CandidateLink candidate={candidate}/>
+                    </List.Item>
+                ))}
+            </List>
+        </div>
+    </Card>
 );
 
 const CandidateListByParty = ({candidates}) => {
@@ -35,19 +40,11 @@ const CandidateListByParty = ({candidates}) => {
         ({partyAffiliation}) => partyAffiliation !== 'DEM' & partyAffiliation !== 'REP');
 
     return (
-        <Grid columns={3} divided>
-            <Grid.Row>
-                <Grid.Column>
-                    <CandidateList candidates={democrats}/>
-                </Grid.Column>
-                <Grid.Column>
-                    <CandidateList candidates={republicans}/>
-                </Grid.Column>
-                <Grid.Column>
-                    <CandidateList candidates={others}/>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
+        <Card.Group itemsPerRow={3}>
+            <CandidateList candidates={democrats} className='democrat'/>
+            <CandidateList candidates={republicans} className='republican'/>
+            <CandidateList candidates={others} className='other'/>
+        </Card.Group>
     );
 };
 
@@ -78,10 +75,12 @@ function StateSummary() {
             <Segment.Group>
                 <Segment>
                     <Header size='large'>Senate Candidates</Header>
-                    {handleEmptyList(() => <CandidateListByParty candidates={senate}/>, senate)}
+                    <Segment.Group>
+                        <Segment>
+                            {handleEmptyList(() => <CandidateListByParty candidates={senate}/>, senate)}
+                        </Segment>
+                    </Segment.Group>
                 </Segment>
-            </Segment.Group>
-            <Segment.Group>
                 <Segment>
                     <Header size='large'>House Candidates</Header>
                     <HouseCandidateList candidatesByDistrict={house}/>

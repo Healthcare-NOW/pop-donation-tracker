@@ -44,3 +44,24 @@
 .incumbent {
   padding-left:5px;
 }
+
+.candidateList {
+  height: 100%;
+  padding: 0.6em;
+}
+
+.candidateList.republican {
+  background-color: #fa8e94;
+}
+
+.candidateList.democrat {
+  background-color: #d2dcfa;
+}
+
+.candidateList.other {
+  background-color: #c4c0c1;
+}
+
+.candidateLink a {
+  color: black;
+}
