@@ -71,6 +71,7 @@ function StateSummary() {
 
     return (
         <div>
+            <Link to='/'><Icon name='home' color='black' size='large'/></Link>
             <Header as='h1'>{state} {year}</Header>
             <Segment.Group>
                 <Segment basic>

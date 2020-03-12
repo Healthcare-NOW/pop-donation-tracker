@@ -16,7 +16,7 @@ for employer in flagged_employers:
         if matching_rule.city:
             query = query.filter(Committee.city.op('~')(matching_rule.city))
         if matching_rule.state:
-            query = query.filter(Committee.state == matching_rule.state)
+            query = query.filter(Committee.state.op('~')(matching_rule.state))
 
         num_updated = query.update(
             {Committee.connected_organization_flagged_as_id: employer.id}, synchronize_session=False)
