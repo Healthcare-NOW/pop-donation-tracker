@@ -21,12 +21,14 @@ export const StateSelector = ({activeState}) => {
                 selection
                 options={stateOptions}
             />
-            <Button
-                onClick={() => history.push(stateSummaryUrl(2020, state))}
-                disabled={state === activeState}
-            >
-                Go
-            </Button>
+            <span className='stateNavigationButton'>
+                <Button
+                    onClick={() => history.push(stateSummaryUrl(2020, state))}
+                    disabled={state === activeState}
+                >
+                    Go
+                </Button>
+            </span>
         </div>
     )
 };
