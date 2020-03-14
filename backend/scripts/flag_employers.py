@@ -1,4 +1,4 @@
-from fecwatch import app
+from dev import app
 from app.models import *
 from app.models import db
 from sqlalchemy.orm import joinedload
