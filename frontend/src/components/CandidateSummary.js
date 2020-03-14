@@ -5,14 +5,15 @@ import {Header, Loader, Segment, Table} from "semantic-ui-react";
 import {useFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {candidateDisplayName} from "../helpers";
-
+import {currencyFormat} from "../constants";
+import {sumBy} from 'lodash';
 
 const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
         <Table.Header>
             <Table.Row>
                 <Table.HeaderCell>Employer</Table.HeaderCell>
-                <Table.HeaderCell>Total Amount</Table.HeaderCell>
+                <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -21,7 +22,7 @@ const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
                     <Table.Cell>{flaggedEmployerName}</Table.Cell>
                     <Table.Cell>
                         <Link
-                            to={flaggedIndividualContributionsUrl(candidateId, flaggedEmployerId)}>{amount}
+                            to={flaggedIndividualContributionsUrl(candidateId, flaggedEmployerId)}>{currencyFormat.format(amount)}
                         </Link>
                     </Table.Cell>
                 </Table.Row>
@@ -35,7 +36,7 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
             <Table.Row>
                 <Table.HeaderCell>Committee</Table.HeaderCell>
                 <Table.HeaderCell>Connected Organization</Table.HeaderCell>
-                <Table.HeaderCell>Total Amount</Table.HeaderCell>
+                <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -43,9 +44,15 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
                 <Table.Row key={committee.id}>
                     <Table.Cell>{committee.name}</Table.Cell>
                     <Table.Cell>{flaggedConnectedOrganization}</Table.Cell>
-                    <Table.Cell>{amount}</Table.Cell>
+                    <Table.Cell>{currencyFormat.format(amount)}</Table.Cell>
                 </Table.Row>
             ))}
+            <Table.Row key='totalFlagged'>
+                <Table.Cell colSpan={2}><b>TOTAL</b></Table.Cell>
+                <Table.Cell>
+                    <b>{currencyFormat.format(sumBy(contributions, ({amount}) => parseInt(amount)))}</b>
+                </Table.Cell>
+            </Table.Row>
         </Table.Body>
     </Table>);
 

@@ -57,3 +57,5 @@ export const stateOptions = [
     {key: 'WV', value: 'WV', text: 'West Virginia'},
     {key: 'WI', value: 'WI', text: 'Wisconsin'},
     {key: 'WY', value: 'WY', text: 'Wyoming'}];
+
+export const currencyFormat = new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'});

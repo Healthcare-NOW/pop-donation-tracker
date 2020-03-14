@@ -4,6 +4,7 @@ import {candidateSummaryUrl, flaggedIndividualContributionsApiUrl} from "../urls
 import {useFetch} from "../hooks";
 import {Header, Loader, Table} from "semantic-ui-react";
 import {candidateDisplayName} from "../helpers";
+import {currencyFormat} from "../constants";
 
 const IndividualContributionList = ({contributions}) => (
     <Table celled>
@@ -27,7 +28,7 @@ const IndividualContributionList = ({contributions}) => (
                     <Table.Cell>{contributor.zip}</Table.Cell>
                     <Table.Cell>{contributor.occupation}</Table.Cell>
                     <Table.Cell>{contributor.employer}</Table.Cell>
-                    <Table.Cell>{amount}</Table.Cell>
+                    <Table.Cell>{currencyFormat.format(amount)}</Table.Cell>
                 </Table.Row>
             ))}
         </Table.Body>
