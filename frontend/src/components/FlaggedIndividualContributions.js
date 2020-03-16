@@ -4,11 +4,12 @@ import {candidateSummaryUrl, flaggedIndividualContributionsApiUrl} from "../urls
 import {useFetch} from "../hooks";
 import {Header, Loader, Table} from "semantic-ui-react";
 import {candidateDisplayName} from "../helpers";
-import {currencyFormat} from "../constants";
+import {currencyFormat, screenWidthThreshold} from "../constants";
+import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
 
 const IndividualContributionList = ({contributions}) => (
     <Table celled>
-        <Table.Header>
+        <Responsive as={Table.Header} minWidth={screenWidthThreshold + 1}>
             <Table.Row>
                 <Table.HeaderCell>Contributor</Table.HeaderCell>
                 <Table.HeaderCell>City</Table.HeaderCell>
@@ -18,7 +19,7 @@ const IndividualContributionList = ({contributions}) => (
                 <Table.HeaderCell>Reported Employer</Table.HeaderCell>
                 <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
-        </Table.Header>
+        </Responsive>
         <Table.Body>
             {contributions.map(({contributor, amount}) => (
                 <Table.Row key={contributor.id}>

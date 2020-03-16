@@ -1,21 +1,21 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom'
 import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl, stateSummaryUrl} from "../urls";
-import {Header, Loader, Segment, Table} from "semantic-ui-react";
+import {Header, List, Loader, Responsive, Segment, Table} from "semantic-ui-react";
 import {useFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {candidateDisplayName} from "../helpers";
-import {currencyFormat} from "../constants";
+import {currencyFormat, screenWidthThreshold} from "../constants";
 import {sumBy} from 'lodash';
 
 const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
-        <Table.Header>
+        <Responsive as={Table.Header} minWidth={screenWidthThreshold + 1}>
             <Table.Row>
                 <Table.HeaderCell>Employer</Table.HeaderCell>
                 <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
-        </Table.Header>
+        </Responsive>
         <Table.Body>
             {contributions.map(({flaggedEmployerId, flaggedEmployerName, amount}) => (
                 <Table.Row key={flaggedEmployerId}>
@@ -32,13 +32,13 @@ const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
 
 const FlaggedCommitteeContributionList = ({contributions}) => (
     <Table celled>
-        <Table.Header>
+        <Responsive as={Table.Header} minWidth={screenWidthThreshold + 1}>
             <Table.Row>
                 <Table.HeaderCell>Committee</Table.HeaderCell>
                 <Table.HeaderCell>Connected Organization</Table.HeaderCell>
                 <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
-        </Table.Header>
+        </Responsive>
         <Table.Body>
             {contributions.map(({committee, flaggedConnectedOrganization, amount}) => (
                 <Table.Row key={committee.id}>
@@ -57,24 +57,36 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
     </Table>);
 
 const CommitteeList = ({committees}) => (
-    <Table celled>
-        <Table.Header>
-            <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Designation</Table.HeaderCell>
-                <Table.HeaderCell>Type</Table.HeaderCell>
-            </Table.Row>
-        </Table.Header>
-        <Table.Body>
-            {committees.map(({id, name, designation, type}) => (
-                <Table.Row key={id}>
-                    <Table.Cell>{name}</Table.Cell>
-                    <Table.Cell>{designation}</Table.Cell>
-                    <Table.Cell>{type}</Table.Cell>
-                </Table.Row>
-            ))}
-        </Table.Body>
-    </Table>);
+    <div>
+        <Responsive maxWidth={screenWidthThreshold}>
+            <List>
+                {
+                    committees.map(({id, name}) => (
+                        <List.Item key={id}>{name}</List.Item>
+                    ))
+                }
+            </List>
+        </Responsive>
+        <Responsive minWidth={screenWidthThreshold + 1}>
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Designation</Table.HeaderCell>
+                        <Table.HeaderCell>Type</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                    {committees.map(({id, name, designation, type}) => (
+                        <Table.Row key={id}>
+                            <Table.Cell>{name}</Table.Cell>
+                            <Table.Cell>{designation}</Table.Cell>
+                            <Table.Cell>{type}</Table.Cell>
+                        </Table.Row>
+                    ))}
+                </Table.Body>
+            </Table></Responsive>
+    </div>);
 
 const CandidateSummary = () => {
     const {candidateId} = useParams();
@@ -105,7 +117,8 @@ const CandidateSummary = () => {
                         <Header size='large'>Committee Contributions</Header>
                         {
                             handleEmptyList(() =>
-                                <FlaggedCommitteeContributionList contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
+                                <FlaggedCommitteeContributionList
+                                    contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
                         }
                     </Segment>
                     <Segment>

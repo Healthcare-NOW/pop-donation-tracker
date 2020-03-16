@@ -1,11 +1,12 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Header, Icon, List, Loader, Segment} from 'semantic-ui-react'
+import {Card, Header, Icon, List, Loader, Responsive, Segment} from 'semantic-ui-react'
 import {useFetch} from "../hooks";
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
-import {filter} from 'lodash';
+import {filter, isEmpty} from 'lodash';
+import {screenWidthThreshold} from "../constants";
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
@@ -40,11 +41,22 @@ const CandidateListByParty = ({candidates}) => {
         ({partyAffiliation}) => partyAffiliation !== 'DEM' & partyAffiliation !== 'REP');
 
     return (
-        <Card.Group itemsPerRow={3}>
-            <CandidateList candidates={democrats} className='democrat'/>
-            <CandidateList candidates={republicans} className='republican'/>
-            <CandidateList candidates={others} className='other'/>
-        </Card.Group>
+        <div>
+            <Responsive maxWidth={screenWidthThreshold}>
+                <Card.Group itemsPerRow={1}>
+                    {!isEmpty(democrats) && <CandidateList candidates={democrats} className='democrat'/>}
+                    {!isEmpty(republicans) && <CandidateList candidates={republicans} className='republican'/>}
+                    {!isEmpty(others) && <CandidateList candidates={others} className='other'/>}
+                </Card.Group>
+            </Responsive>
+            <Responsive minWidth={screenWidthThreshold + 1}>
+                <Card.Group itemsPerRow={3}>
+                    <CandidateList candidates={democrats} className='democrat'/>
+                    <CandidateList candidates={republicans} className='republican'/>
+                    <CandidateList candidates={others} className='other'/>
+                </Card.Group>
+            </Responsive>
+        </div>
     );
 };
 
