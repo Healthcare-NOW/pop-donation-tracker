@@ -3,7 +3,7 @@ import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, flaggedIndividualContributionsApiUrl} from "../urls";
 import {useFetch} from "../hooks";
 import {Header, Loader, Table} from "semantic-ui-react";
-import {candidateDisplayName} from "../helpers";
+import {candidateDisplayName, displayZip} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
 
@@ -26,7 +26,7 @@ const IndividualContributionList = ({contributions}) => (
                     <Table.Cell>{contributor.name}</Table.Cell>
                     <Table.Cell>{contributor.city}</Table.Cell>
                     <Table.Cell>{contributor.state}</Table.Cell>
-                    <Table.Cell>{contributor.zip}</Table.Cell>
+                    <Table.Cell>{displayZip(contributor.zip)}</Table.Cell>
                     <Table.Cell>{contributor.occupation}</Table.Cell>
                     <Table.Cell>{contributor.employer}</Table.Cell>
                     <Table.Cell>{currencyFormat.format(amount)}</Table.Cell>
