@@ -14,6 +14,11 @@ class CandidateSchema(ma.SQLAlchemyAutoSchema):
     committees = ma.List(ma.Nested(CommitteeSchema))
 
 
+class FlaggedEmployerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = FlaggedEmployer
+
+
 class IndividualContributorSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = IndividualContributor
@@ -24,3 +29,4 @@ candidate_with_committees_schema = CandidateSchema()
 candidate_schema = CandidateSchema(exclude=('committees',))
 candidates_schema = CandidateSchema(many=True, exclude=('committees',))
 individual_contributor_schema = IndividualContributorSchema()
+flagged_employer_schema = FlaggedEmployerSchema()
