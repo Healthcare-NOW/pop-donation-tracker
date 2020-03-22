@@ -5,6 +5,7 @@
 .idea/
 bulk_fec_data/
 env/
+test/
 .env
 __pycache__/
 *.pyc

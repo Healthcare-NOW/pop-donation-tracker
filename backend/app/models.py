@@ -103,6 +103,7 @@ class CommitteeContribution(BaseContribution):
 
 class FlaggedEmployer(BaseModel):
     name = db.Column(db.String)
+    group = db.Column(db.String)
 
 
 class FlaggedEmployerMatchingRule(BaseModel):

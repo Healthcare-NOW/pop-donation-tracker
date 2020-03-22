@@ -11,9 +11,15 @@ class BaseConfig:
 
 class Development(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost:5432/fecwatch2'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/fecwatch'
 
 
 class Production(BaseConfig):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('FECWATCH_DB_URI')
+
+
+class Test(BaseConfig):
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/fecwatch_test'
