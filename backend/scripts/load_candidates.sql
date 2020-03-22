@@ -17,7 +17,7 @@ CREATE TABLE candidate_temp
     zip                                 character varying(9)
 );
 
-COPY candidate_temp FROM 'cn.txt' WITH DELIMITER '|' NULL ''
+COPY candidate_temp FROM 'cn.txt' WITH DELIMITER '|' NULL '';
 
 INSERT INTO candidate (fec_id,
                        name,
@@ -41,6 +41,6 @@ SELECT fec_id,
 FROM candidate_temp
 WHERE office = 'H'
    OR office = 'S'
-ON CONFLICT DO NOTHING
+ON CONFLICT DO NOTHING;
 
 DROP TABLE candidate_temp;

@@ -155,7 +155,8 @@ FROM candidate,
      individual_contribution_temp i
 WHERE candidate.id = com.candidate_id
   AND (candidate.office = 'H' OR candidate.office = 'S')
-  AND i.other_fec_id = com.fec_id;
+  AND i.other_fec_id = com.fec_id
+  AND i.committee_fec_id != com.fec_id;
 
 
 DROP TABLE individual_contribution_temp;
