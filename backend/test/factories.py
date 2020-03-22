@@ -50,7 +50,8 @@ class IndividualContributorFactory(SQLAlchemyModelFactory):
     city = factory.Faker('city')
     state = factory.Faker('state_abbr')
     zip = factory.Faker('postalcode')
-    occupation = factory.Faker('job')
+    occupation = 'CONSULTANT'
+    employer = 'ACME, INC.'
     employer_flagged_as = None
 
 
@@ -88,8 +89,8 @@ class CommitteeContributionFactory(BaseContributionFactory):
     recipient_city = factory.Faker('city')
     recipient_state = factory.Faker('state_abbr')
     recipient_zip = factory.Faker('postalcode')
-    recipient_occupation = factory.Faker('job')
-    recipient_employer = factory.Faker('company')
+    recipient_occupation = 'CONSULTANT'
+    recipient_employer = 'ACME, INC.'
     other_fec_id = factory.Sequence(lambda n: f'C{n:08d}')
     candidate_fec_id = factory.Sequence(lambda n: f'H0NY0{n:04d}')
     recipient_committee = factory.SubFactory(CommitteeFactory)
