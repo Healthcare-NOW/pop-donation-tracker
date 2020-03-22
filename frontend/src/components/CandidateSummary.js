@@ -17,12 +17,12 @@ const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
             </Table.Row>
         </Responsive>
         <Table.Body>
-            {contributions.map(({flaggedEmployerId, flaggedEmployerName, amount}) => (
-                <Table.Row key={flaggedEmployerId}>
-                    <Table.Cell>{flaggedEmployerName}</Table.Cell>
+            {contributions.map(({flaggedEmployer, amount}) => (
+                <Table.Row key={flaggedEmployer.id}>
+                    <Table.Cell>{flaggedEmployer.name} ({flaggedEmployer.group})</Table.Cell>
                     <Table.Cell>
                         <Link
-                            to={flaggedIndividualContributionsUrl(candidateId, flaggedEmployerId)}>{currencyFormat.format(amount)}
+                            to={flaggedIndividualContributionsUrl(candidateId, flaggedEmployer.id)}>{currencyFormat.format(amount)}
                         </Link>
                     </Table.Cell>
                 </Table.Row>
@@ -43,7 +43,7 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
             {contributions.map(({committee, flaggedConnectedOrganization, amount}) => (
                 <Table.Row key={committee.id}>
                     <Table.Cell>{committee.name}</Table.Cell>
-                    <Table.Cell>{flaggedConnectedOrganization}</Table.Cell>
+                    <Table.Cell>{flaggedConnectedOrganization.name} ({flaggedConnectedOrganization.group})</Table.Cell>
                     <Table.Cell>{currencyFormat.format(amount)}</Table.Cell>
                 </Table.Row>
             ))}
