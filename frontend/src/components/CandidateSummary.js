@@ -50,7 +50,7 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
             <Table.Row key='totalFlagged'>
                 <Table.Cell colSpan={2}><b>TOTAL</b></Table.Cell>
                 <Table.Cell>
-                    <b>{currencyFormat.format(sumBy(contributions, ({amount}) => parseInt(amount)))}</b>
+                    <b>{currencyFormat.format(sumBy(contributions, 'amount'))}</b>
                 </Table.Cell>
             </Table.Row>
         </Table.Body>

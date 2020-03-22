@@ -40,11 +40,10 @@ def state_summary(year, state):
 @api.route('/candidate/<int:candidate_id>')
 def candidate_summary(candidate_id):
     candidate = Candidate.query.options(joinedload('committees')).get(candidate_id)
-    committee_ids = [committee.id for committee in candidate.committees]
 
-    flagged_individual_contributions = fetch_flagged_individual_contributions(committee_ids)
+    flagged_individual_contributions = fetch_flagged_individual_contributions(candidate)
 
-    flagged_committee_contributions = fetch_flagged_committee_contributions(committee_ids, candidate.id)
+    flagged_committee_contributions = fetch_flagged_committee_contributions(candidate)
 
     return {
         'candidate': candidate_with_committees_schema.dump(candidate),

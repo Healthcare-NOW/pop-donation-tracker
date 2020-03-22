@@ -2,37 +2,28 @@ from test.factories import *
 from app.schemas import candidate_with_committees_schema, flagged_employer_schema, committee_schema
 
 
-def test_candidate_summary(test_client):
-    candidate = CandidateFactory()
-    committee_1 = CommitteeFactory(candidate=candidate)
-    committee_2 = CommitteeFactory(candidate=candidate)
-    bad_employer = FlaggedEmployerFactory()
-    bad_pac = CommitteeFactory(
-        candidate=candidate,
-        connected_organization_flagged_as=bad_employer
-    )
-    bad_contributor = IndividualContributorFactory(employer_flagged_as=bad_employer)
+def test_candidate_summary(test_client, candidate_setup):
     IndividualContributionFactory(
-        contributor=bad_contributor,
-        committee=committee_1,
+        contributor=candidate_setup.bad_contributor,
+        committee=candidate_setup.committee_1,
         amount=200.1
     )
     CommitteeContributionFactory(
-        donor_committee=bad_pac,
-        recipient_committee=committee_2,
+        donor_committee=candidate_setup.bad_pac,
+        recipient_committee=candidate_setup.committee_2,
         amount=200.05
     )
 
-    resp = test_client.get(f'/api/candidate/{candidate.id}')
+    resp = test_client.get(f'/api/candidate/{candidate_setup.candidate.id}')
     assert resp.get_json() == {
-        'candidate': candidate_with_committees_schema.dump(candidate),
+        'candidate': candidate_with_committees_schema.dump(candidate_setup.candidate),
         'flagged_individual_contributions': [{
             'amount': 200.1,
-            'flagged_employer': flagged_employer_schema.dump(bad_employer)
+            'flagged_employer': flagged_employer_schema.dump(candidate_setup.bad_employer)
         }],
         'flagged_committee_contributions': [{
             'amount': 200.05,
-            'flagged_connected_organization': flagged_employer_schema.dump(bad_employer),
-            'committee': committee_schema.dump(bad_pac)
+            'flagged_connected_organization': flagged_employer_schema.dump(candidate_setup.bad_employer),
+            'committee': committee_schema.dump(candidate_setup.bad_pac)
         }]
     }
