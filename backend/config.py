@@ -7,19 +7,18 @@ class BaseConfig:
     TESTING = False
     CSRF_ENABLED = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = os.getenv('FECWATCH_DB_URI', 'postgresql+psycopg2://localhost/fecwatch')
 
 
 class Development(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/fecwatch'
 
 
 class Production(BaseConfig):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('FECWATCH_DB_URI')
 
 
 class Test(BaseConfig):
     TESTING = True
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/fecwatch_test'
+    SQLALCHEMY_DATABASE_URI = BaseConfig.SQLALCHEMY_DATABASE_URI + '_test'
