@@ -1,9 +1,11 @@
 import React from 'react';
 import {
-    BrowserRouter as Router,
+    Router,
     Switch,
     Route
 } from 'react-router-dom';
+import {createBrowserHistory} from 'history';
+import {wrapHistory} from "oaf-react-router";
 import StateSummary from './components/StateSummary';
 import CandidateSummary from './components/CandidateSummary';
 import {Container} from 'semantic-ui-react';
@@ -11,9 +13,12 @@ import './App.css';
 import FlaggedIndividualContributions from "./components/FlaggedIndividualContributions";
 import Landing from "./components/Landing";
 
+const history = createBrowserHistory();
+wrapHistory(history);
+
 export default function App() {
     return (
-        <Router>
+        <Router history={history}>
             <div className='App-mainBody'>
                 <Container>
                     <Switch>
