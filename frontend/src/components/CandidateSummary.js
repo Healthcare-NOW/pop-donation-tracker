@@ -2,11 +2,13 @@ import React from 'react';
 import {Link, useParams} from 'react-router-dom'
 import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl, stateSummaryUrl} from "../urls";
 import {Header, List, Loader, Responsive, Segment, Table} from "semantic-ui-react";
-import {useFetch} from "../hooks";
+import {useReduxFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {candidateDisplayName} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import {sumBy} from 'lodash';
+import {candidateSummarySelector} from "../selectors";
+import {candidateSummarySlice} from "../slices";
 
 const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
@@ -90,10 +92,11 @@ const CommitteeList = ({committees}) => (
 
 const CandidateSummary = () => {
     const {candidateId} = useParams();
-    const {data, isLoading} = useFetch(candidateSummaryApiUrl(candidateId), {
-        candidate: {committees: []},
-        flaggedIndividualContributions: [],
-        flaggedCommitteeContributions: []
+    const {data, isLoading} = useReduxFetch({
+        key: [candidateId],
+        url: candidateSummaryApiUrl(candidateId),
+        selector: candidateSummarySelector,
+        action: candidateSummarySlice.actions.receiveData
     });
     const {candidate, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
     const {officeState, electionYear, committees} = candidate;

@@ -13,3 +13,26 @@ export const stateSummarySlice = createSlice({
         receiveData: (state, action) => action.payload
     }
 });
+
+export const candidateSummarySlice = createSlice({
+    name: 'candidateSummary',
+    initialState: {
+        candidate: {committees: []},
+        flaggedIndividualContributions: [],
+        flaggedCommitteeContributions: []
+    },
+    reducers: {
+        receiveData: (state, action) => action.payload
+    }
+});
+
+export const flaggedIndividualContributionsSlice = createSlice({
+    name: 'flaggedIndividualContributions',
+    initialState: {
+        candidate: {},
+        contributions: []
+    },
+    reducers: {
+        receiveData: (state, action) => action.payload
+    }
+});

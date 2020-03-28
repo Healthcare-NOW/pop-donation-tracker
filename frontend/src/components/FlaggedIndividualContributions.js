@@ -1,11 +1,13 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, flaggedIndividualContributionsApiUrl} from "../urls";
-import {useFetch} from "../hooks";
+import {useReduxFetch} from "../hooks";
 import {Header, Loader, Table} from "semantic-ui-react";
 import {candidateDisplayName, displayZip} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
+import {flaggedIndividualContributionsSelector} from "../selectors";
+import {flaggedIndividualContributionsSlice} from "../slices";
 
 const IndividualContributionList = ({contributions}) => (
     <Table celled>
@@ -37,10 +39,13 @@ const IndividualContributionList = ({contributions}) => (
 
 const FlaggedIndividualContributions = () => {
     const {candidateId, employerId} = useParams();
-    const {data, isLoading} = useFetch(flaggedIndividualContributionsApiUrl(candidateId, employerId), {
-        candidate: {},
-        contributions: []
+    const {data, isLoading} = useReduxFetch({
+        url: flaggedIndividualContributionsApiUrl(candidateId, employerId),
+        key: [candidateId, employerId],
+        selector: flaggedIndividualContributionsSelector,
+        action: flaggedIndividualContributionsSlice.actions.receiveData
     });
+
     const {candidate, contributions, flaggedEmployerName} = data;
     if (isLoading) return (<Loader active inline='centered'/>);
 
