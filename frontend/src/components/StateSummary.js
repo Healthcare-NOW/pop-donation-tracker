@@ -2,11 +2,13 @@ import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
 import {Card, Header, Icon, List, Loader, Responsive, Segment} from 'semantic-ui-react'
-import {useFetch} from "../hooks";
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty} from 'lodash';
 import {screenWidthThreshold} from "../constants";
+import {useReduxFetch} from "../hooks";
+import {stateSummarySelector} from "../selectors";
+import {stateSummarySlice} from "../slices";
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
@@ -72,9 +74,11 @@ const HouseCandidateList = ({candidatesByDistrict}) =>
 
 function StateSummary() {
     const {year, state} = useParams();
-    const {data, isLoading} = useFetch(stateSummaryApiUrl(year, state), {
-        senate: [],
-        house: []
+    const {data, isLoading} = useReduxFetch({
+        url: stateSummaryApiUrl(year, state),
+        key: [year, state],
+        selector: stateSummarySelector,
+        action: stateSummarySlice.actions.receiveData
     });
 
     const {senate, house} = data;

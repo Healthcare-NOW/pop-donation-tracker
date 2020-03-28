@@ -29,6 +29,8 @@ def state_summary(year, state):
     ).filter(Candidate.office_district.isnot(None)).order_by(Candidate.name), lambda c: c.office_district)
 
     return {
+        'state': state,
+        'year': year,
         'senate': candidates_schema.dump(senate_candidates),
         'house': [
             {'district': district,
