@@ -2,8 +2,8 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import {flaggedIndividualContributionsApiUrl} from "../urls";
 import {useReduxFetch} from "../hooks";
-import {Loader, Table} from "semantic-ui-react";
-import {displayZip} from "../helpers";
+import {Header, Loader, Table} from "semantic-ui-react";
+import {candidateDisplayName, displayZip} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
 import {flaggedIndividualContributionsSelector} from "../selectors";
@@ -49,8 +49,7 @@ const FlaggedIndividualContributions = () => {
                 ...data
             }));
 
-            const {candidate: {electionYear, officeState, partyAffiliation, name, id},
-                flaggedEmployerName } = data;
+            const {candidate: {electionYear, officeState, partyAffiliation, name, id}} = data;
 
             dispatch(breadCrumbsSlice.actions.receiveData({
                 year: electionYear,
@@ -59,20 +58,20 @@ const FlaggedIndividualContributions = () => {
                     name,
                     partyAffiliation,
                     id
-                },
-                flaggedEmployer: {
-                    name: flaggedEmployerName,
-                    id: employerId
                 }
             }));
 
         }
     });
-    const {contributions} = data;
+    const {candidate, contributions, flaggedEmployerName} = data;
     if (isLoading) return (<Loader active inline='centered'/>);
 
     return (
-        <IndividualContributionList contributions={contributions}/>
+        <div>
+            <Header as='h1'>Contributions from {flaggedEmployerName} employees
+                to {candidateDisplayName(candidate)}</Header>
+            <IndividualContributionList contributions={contributions}/>
+        </div>
     );
 };
 

@@ -17,7 +17,7 @@ export const TopNav = () => {
                         const active = takeRight(breadcrumbs, 1);
                         return (
                             <Route exact path={path} key={path}>
-                                <Breadcrumb size="massive">
+                                <Breadcrumb size="huge">
                                     {
                                         map(inactive, (BreadcrumbComponent) => (
                                             <>

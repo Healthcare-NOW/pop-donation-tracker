@@ -10,7 +10,6 @@ import FlaggedIndividualContributions from "./components/FlaggedIndividualContri
 import Landing from "./components/Landing";
 import {
     CandidateBreadcrumb,
-    FlaggedIndividualContributionsBreadcrumb,
     HomeBreadcrumb,
     StateBreadcrumb
 } from "./breadcrumbs";
@@ -29,7 +28,7 @@ export const routeMap = [
     {
         path: '/candidate/:candidateId/flagged-employer/:employerId',
         MainComponent: FlaggedIndividualContributions,
-        breadcrumbs: [HomeBreadcrumb, StateBreadcrumb, CandidateBreadcrumb, FlaggedIndividualContributionsBreadcrumb]
+        breadcrumbs: [HomeBreadcrumb, StateBreadcrumb, CandidateBreadcrumb]
     },
     {
         path: '/candidate/:candidateId',

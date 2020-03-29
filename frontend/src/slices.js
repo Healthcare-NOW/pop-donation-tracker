@@ -47,10 +47,6 @@ export const breadCrumbsSlice = createSlice({
             id: null,
             name: null,
             partyAffiliation: null
-        },
-        flaggedEmployer: {
-            name: null,
-            id: null
         }
     },
     reducers: {
