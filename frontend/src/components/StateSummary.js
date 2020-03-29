@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Header, Icon, List, Loader, Responsive, Segment} from 'semantic-ui-react'
+import {Card, Header, List, Loader, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty} from 'lodash';
