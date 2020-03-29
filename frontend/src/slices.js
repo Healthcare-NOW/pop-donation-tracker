@@ -36,3 +36,30 @@ export const flaggedIndividualContributionsSlice = createSlice({
         receiveData: (state, action) => action.payload
     }
 });
+
+export const breadCrumbsSlice = createSlice({
+    name: 'breadcrumbs',
+    initialState: {
+        isLoading: true,
+        state: null,
+        year: null,
+        candidate: {
+            id: null,
+            name: null,
+            partyAffiliation: null
+        },
+        flaggedEmployer: {
+            name: null,
+            id: null
+        }
+    },
+    reducers: {
+        receiveData: (state, action) => ({
+            ...state,
+            ...action.payload
+        }),
+        setLoading: (state, action) => {
+            state.isLoading = action.payload
+        }
+    }
+});

@@ -1,13 +1,13 @@
 import React from 'react';
-import {Link, useParams} from 'react-router-dom';
-import {candidateSummaryUrl, flaggedIndividualContributionsApiUrl} from "../urls";
+import {useParams} from 'react-router-dom';
+import {flaggedIndividualContributionsApiUrl} from "../urls";
 import {useReduxFetch} from "../hooks";
-import {Header, Loader, Table} from "semantic-ui-react";
-import {candidateDisplayName, displayZip} from "../helpers";
+import {Loader, Table} from "semantic-ui-react";
+import {displayZip} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
 import {flaggedIndividualContributionsSelector} from "../selectors";
-import {flaggedIndividualContributionsSlice} from "../slices";
+import {breadCrumbsSlice, flaggedIndividualContributionsSlice} from "../slices";
 
 const IndividualContributionList = ({contributions}) => (
     <Table celled>
@@ -43,19 +43,36 @@ const FlaggedIndividualContributions = () => {
         url: flaggedIndividualContributionsApiUrl(candidateId, employerId),
         key: [candidateId, employerId],
         selector: flaggedIndividualContributionsSelector,
-        action: flaggedIndividualContributionsSlice.actions.receiveData
-    });
+        onSuccess: (dispatch, data) => {
+            dispatch(flaggedIndividualContributionsSlice.actions.receiveData({
+                key: [candidateId, employerId],
+                ...data
+            }));
 
-    const {candidate, contributions, flaggedEmployerName} = data;
+            const {candidate: {electionYear, officeState, partyAffiliation, name, id},
+                flaggedEmployerName } = data;
+
+            dispatch(breadCrumbsSlice.actions.receiveData({
+                year: electionYear,
+                state: officeState,
+                candidate: {
+                    name,
+                    partyAffiliation,
+                    id
+                },
+                flaggedEmployer: {
+                    name: flaggedEmployerName,
+                    id: employerId
+                }
+            }));
+
+        }
+    });
+    const {contributions} = data;
     if (isLoading) return (<Loader active inline='centered'/>);
 
     return (
-        <div>
-            <Link to={candidateSummaryUrl(candidate.id)}>Back to {candidateDisplayName(candidate)}</Link>
-            <Header as='h1'>Contributions from {flaggedEmployerName} employees
-                to {candidateDisplayName(candidate)}</Header>
-            <IndividualContributionList contributions={contributions}/>
-        </div>
+        <IndividualContributionList contributions={contributions}/>
     );
 };
 

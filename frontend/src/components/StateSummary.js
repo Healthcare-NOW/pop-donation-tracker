@@ -8,7 +8,7 @@ import {filter, isEmpty} from 'lodash';
 import {screenWidthThreshold} from "../constants";
 import {useReduxFetch} from "../hooks";
 import {stateSummarySelector} from "../selectors";
-import {stateSummarySlice} from "../slices";
+import {breadCrumbsSlice, stateSummarySlice} from "../slices";
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
@@ -72,13 +72,22 @@ const HouseCandidateList = ({candidatesByDistrict}) =>
         )}
     </Segment.Group>);
 
-function StateSummary() {
+const StateSummary = () => {
     const {year, state} = useParams();
     const {data, isLoading} = useReduxFetch({
         url: stateSummaryApiUrl(year, state),
         key: [year, state],
         selector: stateSummarySelector,
-        action: stateSummarySlice.actions.receiveData
+        onSuccess: (dispatch, data) => {
+            dispatch(stateSummarySlice.actions.receiveData({
+                key: [year, state],
+                ...data
+            }));
+            dispatch(breadCrumbsSlice.actions.receiveData({
+                state,
+                year
+            }));
+        }
     });
 
     const {senate, house} = data;
@@ -87,8 +96,6 @@ function StateSummary() {
 
     return (
         <div>
-            <Link to='/'><Icon name='home' color='black' size='large'/></Link>
-            <Header as='h1'>{state} {year}</Header>
             <Segment.Group>
                 <Segment basic>
                     <Header size='large'>Senate Candidates</Header>
@@ -105,6 +112,6 @@ function StateSummary() {
             </Segment.Group>
         </div>
     )
-}
+};
 
 export default StateSummary;

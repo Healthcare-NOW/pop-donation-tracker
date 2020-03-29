@@ -1,14 +1,13 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom'
-import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl, stateSummaryUrl} from "../urls";
+import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl} from "../urls";
 import {Header, List, Loader, Responsive, Segment, Table} from "semantic-ui-react";
 import {useReduxFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
-import {candidateDisplayName} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import {sumBy} from 'lodash';
 import {candidateSummarySelector} from "../selectors";
-import {candidateSummarySlice} from "../slices";
+import {breadCrumbsSlice, candidateSummarySlice} from "../slices";
 
 const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
@@ -96,44 +95,56 @@ const CandidateSummary = () => {
         key: [candidateId],
         url: candidateSummaryApiUrl(candidateId),
         selector: candidateSummarySelector,
-        action: candidateSummarySlice.actions.receiveData
+        onSuccess: (dispatch, data) => {
+            dispatch(candidateSummarySlice.actions.receiveData({
+                key: [candidateId],
+                ...data
+            }));
+
+            const {electionYear, officeState, partyAffiliation, name, id} = data.candidate;
+            dispatch(breadCrumbsSlice.actions.receiveData({
+                year: electionYear,
+                state: officeState,
+                candidate: {
+                    name,
+                    partyAffiliation,
+                    id
+                }
+            }))
+        }
     });
-    const {candidate, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
-    const {officeState, electionYear, committees} = candidate;
+
+    const {candidate: {committees}, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
 
     if (isLoading) return (<Loader active inline='centered'/>);
 
     return (
         <div>
-            <Link to={stateSummaryUrl(electionYear, officeState)}>Back to {officeState} {electionYear}</Link>
-            <Header as='h1'>{candidateDisplayName(candidate)}</Header>
-            <div>
-                <Segment.Group>
-                    <Segment>
-                        <Header size='large'>Committees</Header>
-                        {
-                            handleEmptyList(() =>
-                                <CommitteeList committees={committees}/>, committees)
-                        }
-                    </Segment>
-                    <Segment>
-                        <Header size='large'>Committee Contributions</Header>
-                        {
-                            handleEmptyList(() =>
-                                <FlaggedCommitteeContributionList
-                                    contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
-                        }
-                    </Segment>
-                    <Segment>
-                        <Header size='large'>Individual Contributions</Header>
-                        {
-                            handleEmptyList(() =>
-                                <FlaggedIndividualContributionList candidateId={candidateId}
-                                                                   contributions={flaggedIndividualContributions}/>, flaggedIndividualContributions)
-                        }
-                    </Segment>
-                </Segment.Group>
-            </div>
+            <Segment.Group>
+                <Segment>
+                    <Header size='large'>Committees</Header>
+                    {
+                        handleEmptyList(() =>
+                            <CommitteeList committees={committees}/>, committees)
+                    }
+                </Segment>
+                <Segment>
+                    <Header size='large'>Committee Contributions</Header>
+                    {
+                        handleEmptyList(() =>
+                            <FlaggedCommitteeContributionList
+                                contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
+                    }
+                </Segment>
+                <Segment>
+                    <Header size='large'>Individual Contributions</Header>
+                    {
+                        handleEmptyList(() =>
+                            <FlaggedIndividualContributionList candidateId={candidateId}
+                                                               contributions={flaggedIndividualContributions}/>, flaggedIndividualContributions)
+                    }
+                </Segment>
+            </Segment.Group>
         </div>
 
 
