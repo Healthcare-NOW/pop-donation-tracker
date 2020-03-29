@@ -32,8 +32,9 @@ export const ComplianceSummary = ({flaggedIndividualContributions, flaggedCommit
                                 <List.Content>
                                     Received contributions exceeding $200 from employees of flagged
                                         companies.
-                                    <p><i>Note: These employees may or may not be high-ranking
-                                        executives.</i></p>
+                                    <br/>tete
+                                    <i>Note: These employees may or may not be high-ranking
+                                        executives.</i>
                                 </List.Content>
                             </>)
 
