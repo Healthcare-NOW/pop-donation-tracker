@@ -20,6 +20,10 @@
   top: -0.05em;
 }
 
+.App-complianceSummaryItem {
+  padding-bottom: 15px;
+}
+
 .candidateList {
   height: 100%;
   padding: 0.6em;

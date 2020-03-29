@@ -8,6 +8,7 @@ import {currencyFormat, screenWidthThreshold} from "../constants";
 import {sumBy} from 'lodash';
 import {candidateSummarySelector} from "../selectors";
 import {breadCrumbsSlice, candidateSummarySlice} from "../slices";
+import {ComplianceSummary} from "./ComplianceSummary";
 
 const FlaggedIndividualContributionList = ({candidateId, contributions}) => (
     <Table celled>
@@ -120,6 +121,10 @@ const CandidateSummary = () => {
 
     return (
         <div>
+            <ComplianceSummary
+                flaggedIndividualContributions={flaggedIndividualContributions}
+                flaggedCommitteeContributions={flaggedCommitteeContributions}
+            />
             <Segment.Group>
                 <Segment>
                     <Header size='large'>Committees</Header>
