@@ -7,8 +7,17 @@
   padding-bottom:50px;
 }
 
-.incumbent {
-  padding-left:5px;
+.App-incumbentIcon {
+  padding-left: 5px;
+  display: inline-block;
+  height: 1.1em;
+  position: absolute;
+}
+
+.App-incumbentIcon svg {
+  height: 100%;
+  position: absolute;
+  top: -0.05em;
 }
 
 .candidateList {

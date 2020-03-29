@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import {flaggedIndividualContributionsApiUrl} from "../urls";
 import {useReduxFetch} from "../hooks";
 import {Header, Loader, Table} from "semantic-ui-react";
-import {candidateDisplayName, displayZip} from "../helpers";
+import {displayZip} from "../helpers";
 import {currencyFormat, screenWidthThreshold} from "../constants";
 import Responsive from "semantic-ui-react/dist/commonjs/addons/Responsive";
 import {flaggedIndividualContributionsSelector} from "../selectors";
@@ -63,13 +63,12 @@ const FlaggedIndividualContributions = () => {
 
         }
     });
-    const {candidate, contributions, flaggedEmployerName} = data;
+    const {contributions, flaggedEmployerName} = data;
     if (isLoading) return (<Loader active inline='centered'/>);
 
     return (
         <div>
-            <Header as='h1'>Contributions from {flaggedEmployerName} employees
-                to {candidateDisplayName(candidate)}</Header>
+            <Header as='h1'>Contributions from {flaggedEmployerName} employees</Header>
             <IndividualContributionList contributions={contributions}/>
         </div>
     );

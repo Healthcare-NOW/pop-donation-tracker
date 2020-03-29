@@ -9,14 +9,14 @@ import {screenWidthThreshold} from "../constants";
 import {useReduxFetch} from "../hooks";
 import {stateSummarySelector} from "../selectors";
 import {breadCrumbsSlice, stateSummarySlice} from "../slices";
+import {Capitol} from './Capitol';
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
     return (
         <span className='candidateLink'>
            <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
-            {candidate.incumbentChallengerStatus === 'I' &&
-            <span className='incumbent'><Icon color='black' name='star'/></span>}
+            {candidate.incumbentChallengerStatus === 'I' && <Capitol/>}
         </span>
     )
 };
