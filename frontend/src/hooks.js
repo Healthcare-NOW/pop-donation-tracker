@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getRequest} from "./request";
 import {useDispatch, useSelector} from "react-redux";
 import {isEqual} from 'lodash';
-import {breadCrumbsSlice} from "./slices";
+import {breadCrumbsSlice,errorsSlice} from "./slices";
 
 export const useReduxFetch = ({url, key, selector, onSuccess}) => {
     const dispatch = useDispatch();
@@ -19,7 +19,8 @@ export const useReduxFetch = ({url, key, selector, onSuccess}) => {
             onSuccess(dispatch, data);
             setLoading(false);
             dispatch(breadCrumbsSlice.actions.setLoading(false));
-        })
+            dispatch(errorsSlice.actions.setHasError(false))
+        }).catch(() => dispatch(errorsSlice.actions.setHasError(true)))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, key);
 

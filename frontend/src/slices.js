@@ -59,3 +59,15 @@ export const breadCrumbsSlice = createSlice({
         }
     }
 });
+
+export const errorsSlice = createSlice({
+    name: 'errors',
+    initialState: {
+        hasError: false
+    },
+    reducers: {
+        setHasError: (state, action) => {
+            state.hasError = action.payload
+        }
+    }
+});

@@ -15,6 +15,7 @@ import {
 } from "./breadcrumbs";
 import {TopNav} from "./components/TopNav";
 import {MainBody} from "./components/MainBody";
+import {ErrorMessage} from "./components/ErrorMessage";
 
 const history = createBrowserHistory();
 wrapHistory(history);
@@ -47,6 +48,7 @@ export default function App() {
         <Router history={history}>
             <div className='App-mainBody'>
                 <Container>
+                    <ErrorMessage/>
                     <TopNav/>
                     <MainBody/>
                 </Container>
