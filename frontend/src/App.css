@@ -9,27 +9,24 @@
 
 .App-incumbentIcon {
   padding-left: 5px;
+  height: 1.2em;
   display: inline-block;
-  height: 1.1em;
-  position: absolute;
 }
 
 .App-incumbentIcon svg {
   height: 100%;
-  position: absolute;
-  top: -0.05em;
+  vertical-align: bottom;
 }
 
 .App-poppIcon {
   padding-left: 5px;
+  height: 1.2em;
   display: inline-block;
-  height: 1.1em;
-  position: absolute;
 }
 
 .App-poppIcon svg {
   height: 100%;
-  position: absolute;
+  vertical-align: bottom;
 }
 
 .candidateList {

@@ -10,6 +10,7 @@ import {useReduxFetch} from "../hooks";
 import {stateSummarySelector} from "../selectors";
 import {breadCrumbsSlice, stateSummarySlice} from "../slices";
 import {Capitol} from './Capitol';
+import {PoppIcon} from "./PoppIcon";
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
@@ -17,6 +18,7 @@ const CandidateLink = ({candidate}) => {
         <span className='candidateLink'>
            <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
             {candidate.incumbentChallengerStatus === 'I' && <Capitol/>}
+            {candidate.pledgeDate && <PoppIcon/>}
         </span>
     )
 };

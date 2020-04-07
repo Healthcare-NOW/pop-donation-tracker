@@ -17,6 +17,7 @@ class Candidate(BaseModel):
     office_district = db.Column(db.String(2))
     incumbent_challenger_status = db.Column(ENUM('C', 'I', 'O', name='incumbent_challenger_status'))
     principal_campaign_committee_fec_id = db.Column(db.String(9))
+    pledge_date = db.Column(db.Date)
 
 
 class Committee(BaseModel):
@@ -81,7 +82,8 @@ class IndividualContribution(BaseContribution):
 
 class CommitteeContribution(BaseContribution):
     donor_committee_id = db.Column(db.Integer, db.ForeignKey('committee.id'), nullable=False)
-    donor_committee = db.relationship('Committee', foreign_keys=[donor_committee_id], backref=db.backref('contributions_given', lazy=True))
+    donor_committee = db.relationship(
+        'Committee', foreign_keys=[donor_committee_id], backref=db.backref('contributions_given', lazy=True))
     recipient_name = db.Column(db.String)
     recipient_city = db.Column(db.String(30))
     recipient_state = db.Column(db.String(2))
@@ -91,7 +93,8 @@ class CommitteeContribution(BaseContribution):
     other_fec_id = db.Column(db.String(9))
     candidate_fec_id = db.Column(db.String(9))
     recipient_committee_id = db.Column(db.Integer, db.ForeignKey('committee.id'))
-    recipient_committee = db.relationship('Committee', foreign_keys=[recipient_committee_id], backref=db.backref('contributions_received', lazy=True))
+    recipient_committee = db.relationship(
+        'Committee', foreign_keys=[recipient_committee_id], backref=db.backref('contributions_received', lazy=True))
     candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.id'))
     candidate = db.relationship('Candidate', backref=db.backref('committee_contributions', lazy=True))
     transaction_fec_id = db.Column(db.String(32))
