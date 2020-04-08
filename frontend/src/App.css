@@ -7,26 +7,24 @@
   padding-bottom:50px;
 }
 
-.App-incumbentIcon {
+.App-candidateBadge {
   padding-left: 5px;
   height: 1.2em;
   display: inline-block;
 }
 
-.App-incumbentIcon svg {
+.App-candidateBadge svg {
   height: 100%;
   vertical-align: bottom;
 }
 
-.App-poppIcon {
-  padding-left: 5px;
-  height: 1.2em;
+.App-complianceIcon {
+  height: 1.5em;
   display: inline-block;
 }
 
-.App-poppIcon svg {
+.App-complianceIcon svg{
   height: 100%;
-  vertical-align: bottom;
 }
 
 .candidateList {

@@ -115,13 +115,14 @@ const CandidateSummary = () => {
         }
     });
 
-    const {candidate: {committees}, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
+    const {candidate, flaggedIndividualContributions, flaggedCommitteeContributions} = data;
 
     if (isLoading) return (<Loader active inline='centered'/>);
 
     return (
         <div>
             <ComplianceSummary
+                candidate={candidate}
                 flaggedIndividualContributions={flaggedIndividualContributions}
                 flaggedCommitteeContributions={flaggedCommitteeContributions}
             />
@@ -130,7 +131,7 @@ const CandidateSummary = () => {
                     <Header size='large'>Committees</Header>
                     {
                         handleEmptyList(() =>
-                            <CommitteeList committees={committees}/>, committees)
+                            <CommitteeList committees={candidate.committees}/>, candidate.committees)
                     }
                 </Segment>
                 <Segment>
