@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Header, List, Loader, Responsive, Segment} from 'semantic-ui-react'
+import {Card, Header, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty} from 'lodash';
@@ -17,8 +17,20 @@ const CandidateLink = ({candidate}) => {
     return (
         <span className='candidateLink'>
            <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
-            {candidate.incumbentChallengerStatus === 'I' && <Capitol/>}
-            {candidate.pledgeDate && <PoppIcon/>}
+            {candidate.incumbentChallengerStatus === 'I' &&
+            <Popup
+                mouseEnterDelay={500}
+                mouseLeaveDelay={500}
+                content="Incumbent"
+                trigger={<div className='App-candidateBadge'><Capitol/></div>}
+            />}
+            {candidate.pledgeDate &&
+            <Popup
+                mouseEnterDelay={500}
+                mouseLeaveDelay={500}
+                content={`Took the pledge on ${candidate.pledgeDate}`}
+                trigger={<div className='App-candidateBadge'><PoppIcon/></div>}
+            />}
         </span>
     )
 };
