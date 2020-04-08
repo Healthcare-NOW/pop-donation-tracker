@@ -32,7 +32,9 @@ def test_state_summary_with_no_candidates(test_client):
     resp = test_client.get('/api/year/2020/state/MA')
     assert resp.get_json() == {
         'senate': [],
-        'house': []
+        'house': [],
+        'state': 'MA',
+        'year': 2020
     }
 
 
