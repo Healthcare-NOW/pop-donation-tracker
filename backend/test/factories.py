@@ -21,6 +21,17 @@ class CandidateFactory(SQLAlchemyModelFactory):
     principal_campaign_committee_fec_id = factory.Sequence(lambda n: f'C{n:08d}')
 
 
+class AlertFactory(SQLAlchemyModelFactory):
+    class Meta:
+        model = Alert
+        sqlalchemy_session = db.session
+
+    id = factory.Sequence(lambda n: n)
+    flagged_committee_contributions = factory.Faker('pydecimal', min_value=0)
+    flagged_individual_contributions = factory.Faker('pydecimal', min_value=0)
+    candidate = factory.SubFactory(CandidateFactory)
+
+
 class CommitteeFactory(SQLAlchemyModelFactory):
     class Meta:
         model = Committee

@@ -1,5 +1,6 @@
 from app.database import db
 from sqlalchemy.dialects.postgresql import ENUM
+from datetime import datetime
 
 
 class BaseModel(db.Model):
@@ -18,6 +19,16 @@ class Candidate(BaseModel):
     incumbent_challenger_status = db.Column(ENUM('C', 'I', 'O', name='incumbent_challenger_status'))
     principal_campaign_committee_fec_id = db.Column(db.String(9))
     pledge_date = db.Column(db.Date)
+
+
+class Alert(BaseModel):
+    created_on = db.Column(db.DateTime, default=datetime.utcnow)
+    from_date = db.Column(db.Date)
+    to_date = db.Column(db.Date)
+    flagged_committee_contributions = db.Column(db.Numeric(18, 2))
+    flagged_individual_contributions = db.Column(db.Numeric(18, 2))
+    candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.id'), nullable=False)
+    candidate = db.relationship('Candidate', backref=db.backref('alerts', lazy=True))
 
 
 class Committee(BaseModel):
@@ -94,7 +105,7 @@ class CommitteeContribution(BaseContribution):
     candidate_fec_id = db.Column(db.String(9))
     recipient_committee_id = db.Column(db.Integer, db.ForeignKey('committee.id'))
     recipient_committee = db.relationship(
-        'Committee', foreign_keys=[recipient_committee_id], backref=db.backref('contributions_received', lazy=True))
+        'Committee', foreign_keys=[recipient_committee_id], backref=db.backref('committee_contributions_received', lazy=True))
     candidate_id = db.Column(db.Integer, db.ForeignKey('candidate.id'))
     candidate = db.relationship('Candidate', backref=db.backref('committee_contributions', lazy=True))
     transaction_fec_id = db.Column(db.String(32))

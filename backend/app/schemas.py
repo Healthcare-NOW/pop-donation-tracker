@@ -2,6 +2,13 @@ from app.serialization import ma
 from app.models import *
 
 
+class AlertSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Alert
+    flagged_committee_contributions = ma.Decimal(2, as_string=True)
+    flagged_individual_contributions = ma.Decimal(2, as_string=True)
+
+
 class CommitteeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Committee
@@ -12,6 +19,7 @@ class CandidateSchema(ma.SQLAlchemyAutoSchema):
         model = Candidate
 
     committees = ma.List(ma.Nested(CommitteeSchema))
+    alerts = ma.List(ma.Nested(AlertSchema))
 
 
 class FlaggedEmployerSchema(ma.SQLAlchemyAutoSchema):

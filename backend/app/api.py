@@ -17,12 +17,12 @@ def health():
 
 @api.route('/year/<int:year>/state/<state>')
 def state_summary(year, state):
-    senate_candidates = Candidate.query.filter_by(
+    senate_candidates = Candidate.query.options(joinedload('alerts')).filter_by(
         office_state=state,
         election_year=year,
         office='S'
     ).order_by(Candidate.name)
-    candidates_by_district = group_by(Candidate.query.filter_by(
+    candidates_by_district = group_by(Candidate.query.options(joinedload('alerts')).filter_by(
         office_state=state,
         election_year=year,
         office='H'
