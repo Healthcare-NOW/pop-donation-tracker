@@ -4,19 +4,44 @@ import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
 import {Card, Header, Icon, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
-import {filter, isEmpty} from 'lodash';
+import {filter, isEmpty, maxBy} from 'lodash';
 import {screenWidthThreshold} from "../constants";
 import {useReduxFetch} from "../hooks";
 import {stateSummarySelector} from "../selectors";
 import {breadCrumbsSlice, stateSummarySlice} from "../slices";
 import {Capitol} from './Capitol';
 import {PoppIcon} from "./PoppIcon";
+import moment from "moment";
+
+
+const CandidateAlertBadge = ({alerts}) => {
+    if (isEmpty(alerts)) return null;
+
+    const mostRecent = maxBy(alerts, ({created_on}) => moment(created_on, 'YYYY-MM-DD'));
+
+    const severe = parseFloat(mostRecent.flaggedCommitteeContributions) > 0;
+
+    const icon = severe
+        ? <Icon name="times circle" color="red"/>
+        : <Icon name="exclamation circle" color="orange"/>;
+
+    const message = severe
+        ? 'This candidate has received contributions from flagged committees.'
+        : 'This candidate may have received contributions from executives of flagged corporations.';
+
+    return (<Popup
+        mouseEnterDelay={500}
+        mouseLeaveDelay={500}
+        content={message}
+        trigger={<div className='App-candidateBadge'>{icon}</div>}
+    />)
+};
 
 const CandidateLink = ({candidate}) => {
     const {id} = candidate;
     return (
         <span className='candidateLink'>
-           <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName(candidate)}</Link>
+           <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName({candidate, maxLength: 30})}</Link>
             {candidate.incumbentChallengerStatus === 'I' &&
             <Popup
                 mouseEnterDelay={500}
@@ -31,14 +56,7 @@ const CandidateLink = ({candidate}) => {
                 content={`Took the pledge on ${candidate.pledgeDate}`}
                 trigger={<div className='App-candidateBadge'><PoppIcon/></div>}
             />}
-            {!isEmpty(candidate.alerts) &&
-            <Popup
-                mouseEnterDelay={500}
-                mouseLeaveDelay={500}
-                content={`This candidate has received flagged contributions.`}
-                trigger={<div className='App-candidateBadge'><Icon name="flag" color="red"/></div>}
-            />}
-
+            <CandidateAlertBadge alerts={candidate.alerts}/>
         </span>
     )
 };
@@ -87,7 +105,7 @@ const CandidateListByParty = ({candidates}) => {
 const HouseCandidateList = ({candidatesByDistrict}) =>
     (<Segment.Group>
         {candidatesByDistrict.map(({district, candidates}) =>
-            <Segment basic key={district}>
+            <Segment key={district}>
                 <Header size='medium'>{district}</Header>
                 <CandidateListByParty candidates={candidates}/>
             </Segment>
@@ -118,20 +136,18 @@ const StateSummary = () => {
 
     return (
         <div>
-            <Segment.Group>
-                <Segment basic>
-                    <Header size='large'>Senate Candidates</Header>
-                    <Segment.Group>
-                        <Segment basic>
-                            {handleEmptyList(() => <CandidateListByParty candidates={senate}/>, senate)}
-                        </Segment>
-                    </Segment.Group>
-                </Segment>
-                <Segment basic>
-                    <Header size='large'>House Candidates</Header>
-                    <HouseCandidateList candidatesByDistrict={house}/>
-                </Segment>
-            </Segment.Group>
+            <Segment basic>
+                <Header size='large'>Senate Candidates</Header>
+                <Segment.Group>
+                    <Segment basic>
+                        {handleEmptyList(() => <CandidateListByParty candidates={senate}/>, senate)}
+                    </Segment>
+                </Segment.Group>
+            </Segment>
+            <Segment basic>
+                <Header size='large'>House Candidates</Header>
+                <HouseCandidateList candidatesByDistrict={house}/>
+            </Segment>
         </div>
     )
 };

@@ -23,7 +23,7 @@ export const ComplianceSummary = ({candidate, flaggedIndividualContributions, fl
                                     No contributions exceeding $200 from flagged committees.
                                 </List.Content></>)
                             :
-                            (<><List.Icon name="warning circle" color="red" size="large"/>
+                            (<><List.Icon name="times circle" color="red" size="large"/>
                                 <List.Content>Received contributions totalling {totalCommitteeContributions} from
                                     flagged committees.
                                 </List.Content></>)

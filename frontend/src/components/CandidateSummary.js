@@ -126,31 +126,30 @@ const CandidateSummary = () => {
                 flaggedIndividualContributions={flaggedIndividualContributions}
                 flaggedCommitteeContributions={flaggedCommitteeContributions}
             />
-            <Segment.Group>
-                <Segment>
-                    <Header size='large'>Committees</Header>
-                    {
-                        handleEmptyList(() =>
-                            <CommitteeList committees={candidate.committees}/>, candidate.committees)
-                    }
-                </Segment>
-                <Segment>
-                    <Header size='large'>Committee Contributions</Header>
-                    {
-                        handleEmptyList(() =>
-                            <FlaggedCommitteeContributionList
-                                contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
-                    }
-                </Segment>
-                <Segment>
-                    <Header size='large'>Individual Contributions</Header>
-                    {
-                        handleEmptyList(() =>
-                            <FlaggedIndividualContributionList candidateId={candidateId}
-                                                               contributions={flaggedIndividualContributions}/>, flaggedIndividualContributions)
-                    }
-                </Segment>
-            </Segment.Group>
+            <Segment basic>
+                <Header size='large'>Campaign Committees</Header>
+                {
+                    handleEmptyList(() =>
+                        <CommitteeList committees={candidate.committees}/>, candidate.committees)
+                }
+            </Segment>
+
+            <Segment basic>
+                <Header size='large'>Committee Contributions</Header>
+                {
+                    handleEmptyList(() =>
+                        <FlaggedCommitteeContributionList
+                            contributions={flaggedCommitteeContributions}/>, flaggedCommitteeContributions)
+                }
+            </Segment>
+            <Segment basic>
+                <Header size='large'>Individual Contributions</Header>
+                {
+                    handleEmptyList(() =>
+                        <FlaggedIndividualContributionList candidateId={candidateId}
+                                                           contributions={flaggedIndividualContributions}/>, flaggedIndividualContributions)
+                }
+            </Segment>
         </div>
 
 

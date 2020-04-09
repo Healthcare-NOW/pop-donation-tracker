@@ -17,5 +17,5 @@ export const HomeBreadcrumb = () => (
 
 export const CandidateBreadcrumb = () => {
     const {candidate} = useSelector(breadcrumbsSelector);
-    return (<Breadcrumb.Section as={Link} to={candidateSummaryUrl(candidate.id)}>{candidateDisplayName(candidate)}</Breadcrumb.Section>)
+    return (<Breadcrumb.Section as={Link} to={candidateSummaryUrl(candidate.id)}>{candidateDisplayName({candidate})}</Breadcrumb.Section>)
 };

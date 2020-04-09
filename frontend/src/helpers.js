@@ -1,9 +1,11 @@
 import {partyDisplayNames} from "./constants";
+import {truncate} from 'lodash';
 
-export const candidateDisplayName = (candidate) => {
+export const candidateDisplayName = ({candidate, maxLength}) => {
     const {name, partyAffiliation} = candidate;
     const partyAffiliationDisplay = partyDisplayNames[partyAffiliation] || partyAffiliation;
-    return `${name} (${partyAffiliationDisplay})`;
+    const truncatedName = maxLength ? truncate(name, maxLength) : name;
+    return `${truncatedName} (${partyAffiliationDisplay})`;
 };
 
 export const displayZip = (zip) => {
