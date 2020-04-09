@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Header, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
+import {Card, Header, Icon, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty} from 'lodash';
@@ -31,6 +31,14 @@ const CandidateLink = ({candidate}) => {
                 content={`Took the pledge on ${candidate.pledgeDate}`}
                 trigger={<div className='App-candidateBadge'><PoppIcon/></div>}
             />}
+            {!isEmpty(candidate.alerts) &&
+            <Popup
+                mouseEnterDelay={500}
+                mouseLeaveDelay={500}
+                content={`This candidate has received flagged contributions.`}
+                trigger={<div className='App-candidateBadge'><Icon name="flag" color="red"/></div>}
+            />}
+
         </span>
     )
 };
