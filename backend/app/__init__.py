@@ -14,7 +14,7 @@ migrate = Migrate(compare_type=True)
 def create_app(config):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config)
-    app.register_blueprint(api, url_prefix='/api')
+    app.register_blueprint(api, url_prefix="/api")
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)

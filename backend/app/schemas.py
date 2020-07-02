@@ -5,6 +5,7 @@ from app.models import *
 class AlertSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Alert
+
     flagged_committee_contributions = ma.Decimal(2, as_string=True)
     flagged_individual_contributions = ma.Decimal(2, as_string=True)
 
@@ -34,7 +35,7 @@ class IndividualContributorSchema(ma.SQLAlchemyAutoSchema):
 
 committee_schema = CommitteeSchema()
 candidate_with_committees_schema = CandidateSchema()
-candidate_schema = CandidateSchema(exclude=('committees',))
-candidates_schema = CandidateSchema(many=True, exclude=('committees',))
+candidate_schema = CandidateSchema(exclude=("committees",))
+candidates_schema = CandidateSchema(many=True, exclude=("committees",))
 individual_contributor_schema = IndividualContributorSchema()
 flagged_employer_schema = FlaggedEmployerSchema()

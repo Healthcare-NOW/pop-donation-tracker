@@ -21,7 +21,7 @@ def test_contributions_of_type_24a_ignored(candidate_setup):
     CommitteeContributionFactory(
         donor_committee=candidate_setup.bad_pac,
         recipient_committee=candidate_setup.committee_1,
-        transaction_type='24A',
+        transaction_type="24A",
         amount=200.1,
     )
     result = fetch_flagged_committee_contributions(candidate_setup.candidate)
