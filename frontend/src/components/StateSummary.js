@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Container, Header, Icon, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
+import {Card, Header, Icon, List, Loader, Message, Popup, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty, maxBy} from 'lodash';
@@ -135,7 +135,7 @@ const StateSummary = () => {
 
     return (
         <div>
-            <Container>
+            <Message size='large'>
                 <p>This page lists all of your state’s candidates for the U.S. Congress. <b>Click on any candidate’s
                     name for a complete report on donations they have received from healthcare corporations and
                     executives who are funding opposition to Medicare for All.</b></p>
@@ -168,7 +168,7 @@ const StateSummary = () => {
                     </List.Item>
                 </List>
 
-            </Container>
+            </Message>
 
             <Segment basic>
                 <Header size='large'>Senate Candidates</Header>

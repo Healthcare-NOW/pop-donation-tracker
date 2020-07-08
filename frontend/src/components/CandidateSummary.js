@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom'
 import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl} from "../urls";
-import {Container, Header, Loader, Responsive, Segment, Table} from "semantic-ui-react";
+import {Header, Loader, Message, Responsive, Segment, Table} from "semantic-ui-react";
 import {useReduxFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {currencyFormat, screenWidthThreshold} from "../constants";
@@ -89,17 +89,21 @@ const CandidateSummary = () => {
 
     return (
         <div>
-            <Container>
-                <p>Below you’ll find a listing of donations this candidate has received from healthcare corporations and executives funding opposition to Medicare for All.</p>
+            <Message size='large'>
+                <p>Below you’ll find a listing of donations this candidate has received from healthcare corporations and
+                    executives funding opposition to Medicare for All.</p>
 
-                <p><b>Corporate Contributions</b> lists campaign donations from corporations that are funding opposition to Medicare for All (meaning they have joined the “Partnership for America’s Healthcare Future,” or belong to an industry group like PhRMA that has joined the Partnership).</p>
+                <p><b>Corporate Contributions</b> lists campaign donations from corporations that are funding opposition
+                    to Medicare for All (meaning they have joined the “Partnership for America’s Healthcare Future,” or
+                    belong to an industry group like PhRMA that has joined the Partnership).</p>
 
                 <p><b>Individual Contributions</b> lists the total donations from employees of flagged corporations.</p>
-                <p><b>NOTE</b>: The Patients Over Profits Pledge asks candidates to <a href="https://patientsoverprofits.org/frequently-asked-questions/">refuse donations from only the top executives of corporations opposing Medicare for All</a>. <b>Click on the dollar “Amount” to see a full listing of employees who have donated from that corporation</b>, to determine if the list includes top executives who violate the Pledge.</p>
-
-
-
-            </Container>
+                <p><b>NOTE</b>: The Patients Over Profits Pledge asks candidates to <a
+                    href="https://patientsoverprofits.org/frequently-asked-questions/">refuse donations from only the
+                    top executives of corporations opposing Medicare for All</a>. <b>Click on the dollar “Amount” to see
+                    a full listing of employees who have donated from that corporation</b>, to determine if the list
+                    includes top executives who violate the Pledge.</p>
+            </Message>
             <ComplianceSummary
                 candidate={candidate}
                 flaggedIndividualContributions={flaggedIndividualContributions}
