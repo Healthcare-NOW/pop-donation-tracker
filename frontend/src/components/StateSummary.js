@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom';
 import {candidateSummaryUrl, stateSummaryApiUrl} from '../urls';
-import {Card, Header, Icon, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
+import {Card, Container, Header, Icon, List, Loader, Popup, Responsive, Segment} from 'semantic-ui-react'
 import {candidateDisplayName} from "../helpers";
 import {handleEmptyList} from "../utils";
 import {filter, isEmpty, maxBy} from 'lodash';
@@ -13,28 +13,37 @@ import {Capitol} from './Capitol';
 import {PoppIcon} from "./PoppIcon";
 import moment from "moment";
 
+const Badge = ({icon, popupText}) => (
+    <Popup
+        mouseEnterDelay={500}
+        mouseLeaveDelay={500}
+        content={popupText}
+        trigger={<div className='App-candidateBadge'>{icon}</div>}
+    />
+);
 
-const CandidateAlertBadge = ({alerts}) => {
+
+const CandidateAlertBadges = ({alerts}) => {
     if (isEmpty(alerts)) return null;
 
     const mostRecent = maxBy(alerts, ({created_on}) => moment(created_on, 'YYYY-MM-DD'));
+    const badges = [];
 
-    const severe = parseFloat(mostRecent.flaggedCommitteeContributions) > 0;
+    if (parseFloat(mostRecent.flaggedIndividualContributions) > 0) {
+        badges.push(
+            <Badge key={`mild-${mostRecent.id}`}
+                   popupText={'This candidate may have received contributions from executives of flagged corporations.'}
+                   icon={<Icon name="exclamation circle" color="orange"/>}/>)
+    }
 
-    const icon = severe
-        ? <Icon name="times circle" color="red"/>
-        : <Icon name="exclamation circle" color="orange"/>;
+    if (parseFloat(mostRecent.flaggedCommitteeContributions) > 0) {
+        badges.push(
+            <Badge key={`severe-${mostRecent.id}`}
+                   popupText={'This candidate has received contributions from flagged committees.'}
+                   icon={<Icon name="times circle" color="red"/>}/>)
+    }
 
-    const message = severe
-        ? 'This candidate has received contributions from flagged committees.'
-        : 'This candidate may have received contributions from executives of flagged corporations.';
-
-    return (<Popup
-        mouseEnterDelay={500}
-        mouseLeaveDelay={500}
-        content={message}
-        trigger={<div className='App-candidateBadge'>{icon}</div>}
-    />)
+    return badges
 };
 
 const CandidateLink = ({candidate}) => {
@@ -43,20 +52,10 @@ const CandidateLink = ({candidate}) => {
         <span className='candidateLink'>
            <Link to={candidateSummaryUrl(id)} style={{}}>{candidateDisplayName({candidate, maxLength: 30})}</Link>
             {candidate.incumbentChallengerStatus === 'I' &&
-            <Popup
-                mouseEnterDelay={500}
-                mouseLeaveDelay={500}
-                content="Incumbent"
-                trigger={<div className='App-candidateBadge'><Capitol/></div>}
-            />}
+            <Badge popupText={'Incumbent'} icon={<Capitol/>}/>}
             {candidate.pledgeDate &&
-            <Popup
-                mouseEnterDelay={500}
-                mouseLeaveDelay={500}
-                content={`Took the pledge on ${candidate.pledgeDate}`}
-                trigger={<div className='App-candidateBadge'><PoppIcon/></div>}
-            />}
-            <CandidateAlertBadge alerts={candidate.alerts}/>
+            <Badge popupText={`Took the pledge on ${candidate.pledgeDate}`} icon={<PoppIcon/>}/>}
+            <CandidateAlertBadges alerts={candidate.alerts}/>
         </span>
     )
 };
@@ -136,6 +135,41 @@ const StateSummary = () => {
 
     return (
         <div>
+            <Container>
+                <p>This page lists all of your state’s candidates for the U.S. Congress. <b>Click on any candidate’s
+                    name for a complete report on donations they have received from healthcare corporations and
+                    executives who are funding opposition to Medicare for All.</b></p>
+
+                <p><b>Icons to the right of your candidate’s name</b> give a preview of their donations:</p>
+
+                <List relaxed>
+                    <List.Item>
+                        <List.Icon>
+                            <div className='App-complianceIcon'><Capitol/></div>
+                        </List.Icon>
+                        <List.Content>is an incumbent, sitting Member of Congress</List.Content>
+                    </List.Item>
+                    <List.Item>
+                        <List.Icon>
+                            <div className='App-complianceIcon'><PoppIcon/></div>
+                        </List.Icon>
+                        <List.Content>has taken the Patients Over Profits Pledge</List.Content>
+                    </List.Item>
+                    <List.Item>
+                        <List.Icon name="times circle" color="red" size="large"/>
+                        <List.Content>has received donations from corporations funding opposition to Medicare
+                            for All</List.Content>
+                    </List.Item>
+                    <List.Item>
+                        <List.Icon name="exclamation circle" color="orange" size="large"/>
+                        <List.Content><b><i>may</i></b> have received donations from corporate executives
+                            opposing Medicare for All (click to see candidate’s page for more details)
+                        </List.Content>
+                    </List.Item>
+                </List>
+
+            </Container>
+
             <Segment basic>
                 <Header size='large'>Senate Candidates</Header>
                 <Segment.Group>

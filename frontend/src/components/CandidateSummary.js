@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, useParams} from 'react-router-dom'
 import {candidateSummaryApiUrl, flaggedIndividualContributionsUrl} from "../urls";
-import {Header, List, Loader, Responsive, Segment, Table} from "semantic-ui-react";
+import {Container, Header, Loader, Responsive, Segment, Table} from "semantic-ui-react";
 import {useReduxFetch} from "../hooks";
 import {handleEmptyList} from "../utils";
 import {currencyFormat, screenWidthThreshold} from "../constants";
@@ -37,7 +37,7 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
         <Responsive as={Table.Header} minWidth={screenWidthThreshold + 1}>
             <Table.Row>
                 <Table.HeaderCell>Committee</Table.HeaderCell>
-                <Table.HeaderCell>Connected Organization</Table.HeaderCell>
+                <Table.HeaderCell>Connected Corporation</Table.HeaderCell>
                 <Table.HeaderCell>Amount</Table.HeaderCell>
             </Table.Row>
         </Responsive>
@@ -57,38 +57,6 @@ const FlaggedCommitteeContributionList = ({contributions}) => (
             </Table.Row>
         </Table.Body>
     </Table>);
-
-const CommitteeList = ({committees}) => (
-    <div>
-        <Responsive maxWidth={screenWidthThreshold}>
-            <List>
-                {
-                    committees.map(({id, name}) => (
-                        <List.Item key={id}>{name}</List.Item>
-                    ))
-                }
-            </List>
-        </Responsive>
-        <Responsive minWidth={screenWidthThreshold + 1}>
-            <Table celled>
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell>Name</Table.HeaderCell>
-                        <Table.HeaderCell>Designation</Table.HeaderCell>
-                        <Table.HeaderCell>Type</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {committees.map(({id, name, designation, type}) => (
-                        <Table.Row key={id}>
-                            <Table.Cell>{name}</Table.Cell>
-                            <Table.Cell>{designation}</Table.Cell>
-                            <Table.Cell>{type}</Table.Cell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table></Responsive>
-    </div>);
 
 const CandidateSummary = () => {
     const {candidateId} = useParams();
@@ -121,21 +89,24 @@ const CandidateSummary = () => {
 
     return (
         <div>
+            <Container>
+                <p>Below you’ll find a listing of donations this candidate has received from healthcare corporations and executives funding opposition to Medicare for All.</p>
+
+                <p><b>Corporate Contributions</b> lists campaign donations from corporations that are funding opposition to Medicare for All (meaning they have joined the “Partnership for America’s Healthcare Future,” or belong to an industry group like PhRMA that has joined the Partnership).</p>
+
+                <p><b>Individual Contributions</b> lists the total donations from employees of flagged corporations.</p>
+                <p><b>NOTE</b>: The Patients Over Profits Pledge asks candidates to <a href="https://patientsoverprofits.org/frequently-asked-questions/">refuse donations from only the top executives of corporations opposing Medicare for All</a>. <b>Click on the dollar “Amount” to see a full listing of employees who have donated from that corporation</b>, to determine if the list includes top executives who violate the Pledge.</p>
+
+
+
+            </Container>
             <ComplianceSummary
                 candidate={candidate}
                 flaggedIndividualContributions={flaggedIndividualContributions}
                 flaggedCommitteeContributions={flaggedCommitteeContributions}
             />
             <Segment basic>
-                <Header size='large'>Campaign Committees</Header>
-                {
-                    handleEmptyList(() =>
-                        <CommitteeList committees={candidate.committees}/>, candidate.committees)
-                }
-            </Segment>
-
-            <Segment basic>
-                <Header size='large'>Committee Contributions</Header>
+                <Header size='large'>Corporate Contributions</Header>
                 {
                     handleEmptyList(() =>
                         <FlaggedCommitteeContributionList
