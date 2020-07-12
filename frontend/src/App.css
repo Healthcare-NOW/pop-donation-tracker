@@ -7,6 +7,10 @@
   padding-bottom:20px;
 }
 
+.App-healthcare-now-logo img {
+  height: 75px;
+}
+
 .App-candidateBadge {
   padding-left: 3px;
   height: 1.2em;
