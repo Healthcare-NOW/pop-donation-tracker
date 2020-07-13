@@ -24,7 +24,7 @@ CREATE TABLE individual_contribution_temp
 );
 
 COPY individual_contribution_temp FROM
-    program 'sed ''s/\\/\\\\/g'' < itcont.txt' WITH DELIMITER '|' NULL '';
+    program 'sed ''s/\\/\\\\/g'' < itcont.txt' WITH DELIMITER '|';
 
 CREATE TABLE individual_contribution_temp_extract
 (
@@ -161,7 +161,6 @@ WHERE candidate.id = com.candidate_id
 
 DROP TABLE individual_contribution_temp;
 
-
 INSERT INTO individual_contributor (name, city, state, zip, employer, occupation)
 SELECT DISTINCT name, city, state, zip, employer, occupation
 FROM individual_contribution_temp_extract;
@@ -195,12 +194,13 @@ SELECT i.committee_id,
        i.sub_id
 FROM individual_contribution_temp_extract i,
      individual_contributor c
-WHERE (i.name = c.name or (i.name is null and c.name is null))
-  AND (i.city = c.city or (i.city is null and c.city is null))
-  AND (i.state = c.state or (i.state is null and c.state is null))
-  AND (i.zip = c.zip or (i.zip is null and c.zip is null))
-  AND (i.employer = c.employer or (i.employer is null and c.employer is null))
-  AND (i.occupation = c.occupation or (i.occupation is null and c.occupation is null));
+WHERE (i.name = c.name)
+  AND (i.city = c.city)
+  AND (i.state = c.state)
+  AND (i.zip = c.zip)
+  AND (i.employer = c.employer)
+  AND (i.occupation = c.occupation)
+ON CONFLICT DO NOTHING;
 
 DROP TABLE individual_contribution_temp_extract;
 

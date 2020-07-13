@@ -20,12 +20,11 @@ export const ComplianceSummary = ({candidate, flaggedIndividualContributions, fl
                         isEmpty(flaggedCommitteeContributions) ?
                             (<><List.Icon name="check circle" color="green" size="large"/>
                                 <List.Content>
-                                    No contributions exceeding $200 from flagged committees.
+                                    No contributions exceeding $200 from flagged corporations.
                                 </List.Content></>)
                             :
                             (<><List.Icon name="times circle" color="red" size="large"/>
-                                <List.Content>Received contributions totalling {totalCommitteeContributions} from
-                                    flagged committees.
+                                <List.Content>Received {totalCommitteeContributions} in flagged corporate contributions.
                                 </List.Content></>)
                     }
                 </List.Item>
@@ -34,13 +33,13 @@ export const ComplianceSummary = ({candidate, flaggedIndividualContributions, fl
                         isEmpty(flaggedIndividualContributions) ?
                             (<><List.Icon name="check circle" color="green" size="large"/>
                                 <List.Content>No contributions exceeding $200 from employees of flagged
-                                    companies.</List.Content></>)
+                                    corporations.</List.Content></>)
                             :
                             (<>
                                 <List.Icon name="warning circle" color="orange" size="large"/>
                                 <List.Content>
                                     Received contributions exceeding $200 from employees of flagged
-                                    companies.
+                                    corporations.
                                     <br/>
                                     <i>Note: These employees may or may not be high-ranking
                                         executives.</i>
