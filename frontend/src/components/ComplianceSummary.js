@@ -7,7 +7,7 @@ import {PoppIcon} from "./PoppIcon";
 export const ComplianceSummary = ({candidate, flaggedIndividualContributions, flaggedCommitteeContributions}) => {
     const totalCommitteeContributions = currencyFormat.format(sumBy(flaggedCommitteeContributions, 'amount'));
     return (
-        <Message>
+        <Message size='large'>
             <List relaxed>
                 {candidate.pledgeDate &&
                 (<List.Item>
@@ -40,9 +40,6 @@ export const ComplianceSummary = ({candidate, flaggedIndividualContributions, fl
                                 <List.Content>
                                     Received contributions exceeding $200 from employees of flagged
                                     corporations.
-                                    <br/>
-                                    <i>Note: These employees may or may not be high-ranking
-                                        executives.</i>
                                 </List.Content>
                             </>)
 

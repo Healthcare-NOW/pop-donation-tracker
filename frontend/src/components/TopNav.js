@@ -2,21 +2,23 @@ import {useSelector} from "react-redux";
 import {breadcrumbsSelector} from "../selectors";
 import {Route, Switch} from "react-router-dom";
 import {dropRight, map, takeRight, isEmpty} from "lodash";
-import {Breadcrumb, Header} from "semantic-ui-react";
+import {Breadcrumb, Container, Header} from "semantic-ui-react";
 import React from "react";
 import {routeMap} from "../App";
-import healthcareNowLogo from "../Healthcare-NOW.png";
+import healthcareNowLogo from "../HCNLogo.jpg";
 
 export const TopNav = () => {
     const {isLoading} = useSelector(breadcrumbsSelector);
     return (
         <div>
+            <Container align='center'>
             <div className='App-healthcare-now-logo'>
                 <a href='https://healthcare-now.org'>
                     <img src={healthcareNowLogo} alt="Healthcare-NOW logo"/>
                 </a>
             </div>
-            <Header as='h1'>Patients Over Profits Donation Tracker</Header>
+            <Header className='App-appName' as='h1'>Patients Over Profits Donation Tracker</Header>
+            </Container>
             <div className='App-breadcrumbs'>
                 {isLoading ? <span/> :
                     <Switch>
