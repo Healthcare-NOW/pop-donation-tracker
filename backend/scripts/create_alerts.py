@@ -17,6 +17,8 @@ def candidate_batches(batch_size):
 batch_size = 25
 completed = 0
 for batch in candidate_batches(batch_size):
+    if not batch:
+        break
     for candidate in batch:
         committee_contributions = sum(c[2] for c in fetch_flagged_committee_contributions(candidate))
         individual_contributions = sum(c[1] for c in fetch_flagged_individual_contributions(candidate))

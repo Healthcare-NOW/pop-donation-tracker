@@ -20,18 +20,18 @@ For what follows, we operate entirely in the `backend` directory.
 1.  Copy the contents of `.env.shadow.dev` to a file called `.env` in the same folder. This file contains some default 
     settings for environment variables.
 
-1.  Set up development and test databases. Create a database called `fecwatch` and another one called `fecwatch_test`.
+1.  Set up development and test databases. Create a database called `poptracker` and another one called `poptracker_test`.
     If you're running a local Postgres server and the username is your Unix username with a blank password, you don't
     have to do anything else. Otherwise add an entry to `.env` of the form:
     
     ```
-    FECWATCH_DB_URI=<connection-string>
+    POPTRACKER_DB_URI=<connection-string>
     ```
     where `<connection-string>` should be in the format described 
     [here](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/#connection-uri-format). The dialect is `postgresql`,
     and the driver is `psycopg2`.
     
-1.  Run `flask db upgrade`. If all goes well a number of tables should be created in the `fecwatch` database.
+1.  Run `flask db upgrade`. If all goes well a number of tables should be created in the `poptracker` database.
 
 1.  Run the tests: `python -m pytest`.
 

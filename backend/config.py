@@ -7,7 +7,7 @@ class BaseConfig:
     TESTING = False
     CSRF_ENABLED = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('FECWATCH_DB_URI', 'postgresql+psycopg2://localhost/fecwatch')
+    SQLALCHEMY_DATABASE_URI = os.getenv('POPTRACKER_DB_URI', 'postgresql+psycopg2://localhost/poptracker')
 
 
 class Development(BaseConfig):
