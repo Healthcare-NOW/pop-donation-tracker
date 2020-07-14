@@ -1,4 +1,4 @@
-# FEC Watch
+# Patients Over Profits Donation Tracker
 
 FEC contribution data analytics tool for the Patients Over Profits Pledge initiative.
 
