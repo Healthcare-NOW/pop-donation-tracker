@@ -140,7 +140,7 @@ const StateSummary = () => {
                     name for a complete report on donations they have received from healthcare corporations and
                     executives who are funding opposition to Medicare for All.</b></p>
 
-                <p><b>Icons to the right of your candidate’s name</b> give a preview of their donations:</p>
+                <p><b>Icons to the right of a candidate’s name</b> summarize the following information:</p>
 
                 <List relaxed>
                     <List.Item>
