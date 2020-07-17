@@ -13,7 +13,7 @@
       {
         "source": "/api/**",
         "run":  {
-          "serviceId": "ccwatch-backend"
+          "serviceId": "poptracker-backend"
         }
       },
       {
