@@ -1,0 +1,34 @@
+name: Run backend tests
+on: push
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    container: python:3.7-slim
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: poptracker_test
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Downloads a copy of the code in your repository before running CI tests
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Install development dependencies
+        run: |
+          pip install -r backend/requirements_dev.txt
+          pip install -r backend/requirements.txt
+
+      - name: Run tests
+        run: cd backend && pytest
+        env:
+          POPTRACKER_DB_URI: postgresql+psycopg2://postgres:postgres@postgres/poptracker
