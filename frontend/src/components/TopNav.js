@@ -17,7 +17,7 @@ export const TopNav = () => {
                     <img src={healthcareNowLogo} alt="Healthcare-NOW logo"/>
                 </a>
             </div>
-            <Header className='App-appName' as='h1'>Patients Over Profits Donation Tracker</Header>
+            <Header className='App-appName' as='h1'>Patients Over Profits Donation Tracker 2019-2020</Header>
             </Container>
             <div className='App-breadcrumbs'>
                 {isLoading ? <span/> :

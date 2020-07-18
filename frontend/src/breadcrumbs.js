@@ -5,10 +5,11 @@ import {Link} from "react-router-dom";
 import {candidateSummaryUrl, stateSummaryUrl} from "./urls";
 import React from "react";
 import {candidateDisplayName} from "./helpers";
+import {stateFromAbbreviation} from "./utils";
 
 export const StateBreadcrumb = () => {
     const {state, year} = useSelector(breadcrumbsSelector);
-    return (<Breadcrumb.Section as={Link} to={stateSummaryUrl(year, state)}>{state} {year}</Breadcrumb.Section>)
+    return (<Breadcrumb.Section as={Link} to={stateSummaryUrl(year, state)}>{stateFromAbbreviation(state)}</Breadcrumb.Section>)
 };
 
 export const HomeBreadcrumb = () => (
