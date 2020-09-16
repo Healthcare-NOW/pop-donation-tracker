@@ -1,11 +1,11 @@
 .App-mainBody {
-  padding-top:50px;
-  padding-bottom:50px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .App-breadcrumbs {
   padding-top: 30px;
-  padding-bottom:20px;
+  padding-bottom: 20px;
 }
 
 .App-appName {
@@ -32,8 +32,12 @@
   display: inline-block;
 }
 
-.App-complianceIcon svg{
+.App-complianceIcon svg {
   height: 100%;
+}
+
+.partyName {
+  padding: 0.6em;
 }
 
 .candidateList {
@@ -58,5 +62,5 @@
 }
 
 .stateNavigationButton {
-  margin-left:1em;
+  margin-left: 1em;
 }
