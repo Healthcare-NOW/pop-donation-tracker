@@ -90,7 +90,9 @@ const CandidateLink = ({ candidate }) => {
 
 const CandidateList = ({ candidates, className, party }) => (
   <Card>
-    <Card.Header> {party} </Card.Header>
+    <Card.Header className="partyName">
+      <Header> {party} </Header>
+    </Card.Header>
     <div className={`candidateList ${className}`}>
       <List>
         {candidates.map((candidate) => (
