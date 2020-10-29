@@ -8,7 +8,15 @@ class BaseModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
-class Candidate(BaseModel):
+class BaseModelWithTimestamps(BaseModel):
+    __abstract__ = True
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
+
+class Candidate(BaseModelWithTimestamps):
     fec_id = db.Column(db.String(9), unique=True, nullable=False)
     name = db.Column(db.String)
     party_affiliation = db.Column(db.String(3))
@@ -33,7 +41,7 @@ class Alert(BaseModel):
     candidate = db.relationship("Candidate", backref=db.backref("alerts", lazy=True))
 
 
-class Committee(BaseModel):
+class Committee(BaseModelWithTimestamps):
     fec_id = db.Column(db.String(9), unique=True, nullable=False)
     name = db.Column(db.String)
     city = db.Column(db.String(30))
@@ -57,32 +65,15 @@ class Committee(BaseModel):
     connected_organization_flagged_as = db.relationship("FlaggedEmployer")
 
 
-class BaseIndividual(BaseModel):
-    __abstract__ = True
+class IndividualContributor(BaseModel):
     name = db.Column(db.String)
     city = db.Column(db.String(30))
     state = db.Column(db.String(2))
     zip = db.Column(db.String(9))
     occupation = db.Column(db.String(38))
-
-
-class IndividualContributor(BaseIndividual):
     employer = db.Column(db.String(38))
-    flagged_as_id = db.Column(
-        db.Integer, db.ForeignKey("flagged_individual_contributor.id")
-    )
-    flagged_as = db.relationship(
-        "FlaggedIndividualContributor", backref=db.backref("aliases", lazy=True)
-    )
     employer_flagged_as_id = db.Column(db.Integer, db.ForeignKey("flagged_employer.id"))
     employer_flagged_as = db.relationship("FlaggedEmployer")
-
-
-class FlaggedIndividualContributor(BaseIndividual):
-    flagged_employer_id = db.Column(
-        db.Integer, db.ForeignKey("flagged_employer.id"), nullable=False
-    )
-    flagged_employer = db.relationship("FlaggedEmployer")
 
 
 class BaseContribution(BaseModel):
