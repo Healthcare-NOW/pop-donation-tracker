@@ -15,7 +15,7 @@ def test_state_summary_with_some_candidates(test_client):
     )
     senate_candidate = CandidateFactory(office="S", office_state="MA")
     CandidateFactory(office="S", office_state="NY")
-    CandidateFactory(office="S", election_year=2022, office_state="MA") 
+    CandidateFactory(office="S", election_year=2022, office_state="MA")
 
     resp = test_client.get("/api/year/2020/state/MA")
     assert resp.get_json() == {

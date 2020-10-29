@@ -23,7 +23,7 @@ CREATE TABLE committee_contribution_temp
     memo_text          text,
     sub_id             numeric(19, 0)
 );
-
+-- Replace the filename here with the full path of the file on your system.
 COPY committee_contribution_temp FROM 'itpas2.txt' WITH DELIMITER '|' NULL '';
 
 INSERT INTO committee_contribution
