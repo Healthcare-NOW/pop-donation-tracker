@@ -22,7 +22,7 @@ CREATE TABLE individual_contribution_temp
     memo               text,
     sub_id             numeric(19)
 );
-
+-- Replace the filename here with the full path to the file on your system.
 COPY individual_contribution_temp FROM
     program 'sed ''s/\\/\\\\/g'' < itcont.txt' WITH DELIMITER '|';
 
