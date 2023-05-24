@@ -2,11 +2,16 @@ import {partyDisplayNames} from "./constants";
 import {truncate} from 'lodash';
 
 export const candidateDisplayName = ({candidate, maxLength}) => {
-    const {name, partyAffiliation} = candidate;
+    const {name} = candidate;
+    const partyAffiliation = candidatePartyAffiliation(candidate);
     const partyAffiliationDisplay = partyDisplayNames[partyAffiliation] || partyAffiliation;
     const truncatedName = maxLength ? truncate(name, maxLength) : name;
     return `${truncatedName} (${partyAffiliationDisplay})`;
 };
+
+export const candidatePartyAffiliation = (candidate) => {
+    return candidate.campaigns[0].partyAffiliation;
+}
 
 export const displayZip = (zip) => {
     const nineDigitZip = /^\d{9}$/;

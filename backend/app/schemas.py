@@ -15,12 +15,18 @@ class CommitteeSchema(ma.SQLAlchemyAutoSchema):
         model = Committee
 
 
+class CampaignSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Campaign
+
+
 class CandidateSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Candidate
 
     committees = ma.List(ma.Nested(CommitteeSchema))
     alerts = ma.List(ma.Nested(AlertSchema))
+    campaigns = ma.List(ma.Nested(CampaignSchema))
 
 
 class FlaggedEmployerSchema(ma.SQLAlchemyAutoSchema):

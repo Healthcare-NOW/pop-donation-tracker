@@ -19,7 +19,11 @@ class BaseModelWithTimestamps(BaseModel):
 class Candidate(BaseModelWithTimestamps):
     fec_id = db.Column(db.String(9), unique=True, nullable=False)
     name = db.Column(db.String)
-    party_affiliation = db.Column(db.String(3))
+    principal_campaign_committee_fec_id = db.Column(db.String(9))
+    pledge_date = db.Column(db.Date)
+
+
+class Campaign(BaseModelWithTimestamps):
     election_year = db.Column(db.SmallInteger, nullable=False)
     office = db.Column(ENUM("H", "S", name="office"), nullable=False)
     office_state = db.Column(db.String(2), nullable=False)
@@ -27,8 +31,11 @@ class Candidate(BaseModelWithTimestamps):
     incumbent_challenger_status = db.Column(
         ENUM("C", "I", "O", name="incumbent_challenger_status")
     )
-    principal_campaign_committee_fec_id = db.Column(db.String(9))
-    pledge_date = db.Column(db.Date)
+    party_affiliation = db.Column(db.String(3))
+    candidate_id = db.Column(db.Integer, db.ForeignKey("candidate.id"), nullable=False)
+    candidate = db.relationship(
+        "Candidate", backref=db.backref("campaigns", lazy=True)
+    )
 
 
 class Alert(BaseModel):

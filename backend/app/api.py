@@ -27,16 +27,16 @@ def health():
 @api.route("/year/<int:year>/state/<state>")
 def state_summary(year, state):
     senate_candidates = (
-        Candidate.query.options(joinedload("alerts"))
-        .filter_by(office_state=state, election_year=year, office="S")
+        Candidate.query.join(Candidate.campaigns).options(joinedload("alerts"))
+        .filter(Campaign.office_state == state, Campaign.election_year == year, Campaign.office == "S")
         .order_by(Candidate.name)
     )
-    candidates_by_district = group_by(
-        Candidate.query.options(joinedload("alerts"))
-        .filter_by(office_state=state, election_year=year, office="H")
-        .filter(Candidate.office_district.isnot(None))
+    house_candidates_by_district = group_by(
+        Candidate.query.join(Candidate.campaigns).options(joinedload("alerts"))
+        .filter(Campaign.office_state == state, Campaign.election_year == year, Campaign.office == "H")
+        .filter(Campaign.office_district.isnot(None))
         .order_by(Candidate.name),
-        lambda c: c.office_district,
+        lambda c: c.campaigns[0].office_district
     )
 
     return {
@@ -45,7 +45,7 @@ def state_summary(year, state):
         "senate": candidates_schema.dump(senate_candidates),
         "house": [
             {"district": district, "candidates": candidates_schema.dump(candidates)}
-            for (district, candidates) in candidates_by_district
+            for (district, candidates) in house_candidates_by_district
         ],
     }
 

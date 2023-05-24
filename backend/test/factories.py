@@ -12,13 +12,22 @@ class CandidateFactory(SQLAlchemyModelFactory):
     id = factory.Sequence(lambda n: n)
     fec_id = factory.Sequence(lambda n: f"H0NY0{n:04d}")
     name = factory.Sequence(lambda n: f"DOE {n}, JOHN")
+    principal_campaign_committee_fec_id = factory.Sequence(lambda n: f"C{n:08d}")
+
+
+class CampaignFactory(SQLAlchemyModelFactory):
+    class Meta:
+        model = Campaign
+        sqlalchemy_session = db.session
+
+    id = factory.Sequence(lambda n: n)
     party_affiliation = "DEM"
     election_year = 2020
     office = "H"
     office_state = "NY"
     office_district = "01"
     incumbent_challenger_status = "C"
-    principal_campaign_committee_fec_id = factory.Sequence(lambda n: f"C{n:08d}")
+    candidate = factory.SubFactory(CandidateFactory)
 
 
 class AlertFactory(SQLAlchemyModelFactory):

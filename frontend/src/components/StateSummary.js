@@ -12,7 +12,7 @@ import {
   Responsive,
   Segment,
 } from "semantic-ui-react";
-import { candidateDisplayName } from "../helpers";
+import { candidateDisplayName, candidatePartyAffiliation } from "../helpers";
 import { handleEmptyList } from "../utils";
 import { filter, isEmpty, maxBy } from "lodash";
 import { screenWidthThreshold } from "../constants";
@@ -108,16 +108,14 @@ const CandidateList = ({ candidates, className, party }) => (
 const CandidateListByParty = ({ candidates }) => {
   const democrats = filter(
     candidates,
-    ({ partyAffiliation }) =>
-      partyAffiliation === "DEM" || partyAffiliation === "DFL"
+    (candidate) =>
+      ["DEM", "DFL"].includes(candidatePartyAffiliation(candidate))
   );
-  const republicans = filter(candidates, { partyAffiliation: "REP" });
+  const republicans = filter(candidates, (candidate) => candidatePartyAffiliation(candidate) === "REP");
   const others = filter(
     candidates,
-    ({ partyAffiliation }) =>
-      (partyAffiliation !== "DEM") &
-      (partyAffiliation !== "DFL") &
-      (partyAffiliation !== "REP")
+    (candidate) =>
+        !["DEM", "DFL", "REP"].includes(candidatePartyAffiliation(candidate))
   );
 
   return (
